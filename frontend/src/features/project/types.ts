@@ -8,3 +8,11 @@ export interface IProject {
     modifiedBy: string;
     modifiedAt: Date;
 }
+
+export interface IProjectForm {
+    id: string;
+    name: string;
+    isActive: boolean;
+}
+
+export type ProjectFromMode = "create" | "update";
