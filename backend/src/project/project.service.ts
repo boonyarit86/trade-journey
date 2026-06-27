@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PgService } from 'src/database/pg.service';
-import { IProject, IProjectForm, IProjectRow } from './project.interface';
+import { IProject, IProjectRow } from './project.interface';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectActiveStatusDto, UpdateProjectDto } from './dto/update-project.dto';
 
@@ -11,7 +11,7 @@ export class ProjectService {
     async getAllProjects() {
         const pool = this.pgService.getPool();
         const result = await pool.query(
-            'SELECT * from "trading_setup"."TD01_Project"'
+            'SELECT * from "trading_setup"."TD01_Project" ORDER BY "TD01_CreatedAt"'
         );
         const rows: IProjectRow[] = result.rows;
         const projects: IProject[] = rows.map((r) => ({
