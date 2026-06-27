@@ -1,23 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { ApartmentOutlined, HomeOutlined } from '@ant-design/icons';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import { routePaths } from '../routes/config';
+import AntIcon from '../shared/ui/Icon';
+import type { ItemType } from 'antd/es/menu/interface';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export function AppLayout() {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [pathKey, setPathKey] = useState("1");
 
-  const items2: MenuProps['items'] = [
-    {key: '1', icon: <HomeOutlined />, label: 'Home', onClick: () => navigate("/")},
-    {key: '2', icon: <ApartmentOutlined />, label: 'Project', onClick: () => navigate("/project")}
-  ];
+  const items2: MenuProps['items'] = useMemo(() => routePaths.map((r): ItemType => (
+    {
+      key: r.id,
+      icon: <AntIcon icon={r.icon} />,
+      label: r.label,
+      onClick: () => {
+        setPathKey(r.id);
+        navigate(r.path);
+      },
+    }
+  )), []);
 
   useEffect(() => {
-    navigate("/");
+    const currPathKey = routePaths.find((r) => r.path === location.pathname);
+    if (currPathKey) setPathKey(currPathKey.id);
+
+    navigate(location.pathname);
   }, []);
   
   return (
@@ -27,7 +41,7 @@ export function AppLayout() {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={["1"]}
           items={[]}
           style={{ flex: 1, minWidth: 0 }}
         />
@@ -45,8 +59,9 @@ export function AppLayout() {
               theme="dark"
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
-              style={{ height: '100%', padding: "16px 0" }}
               items={items2}
+              selectedKeys={[pathKey]}
+              style={{ height: '100%', padding: "16px 0" }}
             />
           </Sider>
           <Content style={{ padding: 24, minHeight: "calc(100vh - 64px)" }}>
