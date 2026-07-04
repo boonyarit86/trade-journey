@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PgService } from 'src/database/pg.service';
 import { IAssetType, IAssetTypeRow } from './asset.interface';
+import { CreateAssetTypeDto } from './dto/create-asset.dto';
 
 @Injectable()
 export class AssetService {
@@ -49,4 +50,24 @@ export class AssetService {
             data: assetTypes[0],
         };
     };
+
+    async createAssetType(body: CreateAssetTypeDto) {
+        const pool = this.pgService.getPool();
+        const authorName = "admin";
+
+        const result = await pool.query(
+            `INSERT INTO "common"."CM01_AssetType"
+            ("CM01_Name", "CM01_CreatedBy", "CM01_ModifiedBy")
+            VALUES ($1, $2, $3)
+            RETURNING "CM01_Id"
+            `
+        , [body.name, authorName, authorName]);
+        const rowInserted: IAssetTypeRow = result?.rows?.[0] ?? null;
+
+        return {
+            data: {
+                id: rowInserted?.CM01_Id,
+            },
+        };
+    }
 }
