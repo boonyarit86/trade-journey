@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PgService } from 'src/database/pg.service';
 import { IAssetType, IAssetTypeRow } from './asset.interface';
 import { CreateAssetTypeDto } from './dto/create-asset.dto';
-import { UpdateAssetTypeDto } from './dto/update-asset.dto';
+import { UpdateAssetTypeActiveStatusDto, UpdateAssetTypeDto } from './dto/update-asset.dto';
 
 @Injectable()
 export class AssetService {
@@ -105,5 +105,18 @@ export class AssetService {
         } finally {
             client.release();
         }
-    }
+    };
+
+    async updateAssetTypeActiveStatusById(body: UpdateAssetTypeActiveStatusDto) {
+        const pool = this.pgService.getPool();
+        await pool.query(
+            `UPDATE "common"."CM01_AssetType"
+                SET "CM01_IsActive" = $1,
+                    "CM01_ModifiedAt" = NOW()
+                WHERE "CM01_Id" = $2
+            `,
+            [body.isActive, body.id],
+        );
+        return;
+    };
 };
