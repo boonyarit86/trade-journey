@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router';
-import { routePaths } from '../routes/config';
+import { routePaths, type IRoutePath } from '../routes/config';
 import AntIcon from '../shared/ui/Icon';
 import type { ItemType } from 'antd/es/menu/interface';
 
@@ -50,8 +50,25 @@ export function AppLayout() {
   }), []);
 
   useEffect(() => {
-    const currPathKey = routePaths.find((r) => r.path === location.pathname);
-    if (currPathKey) setPathKey(currPathKey.id);
+    let subMenuMatched: IRoutePath | null = null;
+    const currPathKey = routePaths.find((r) => {
+      if (r.children && r.children?.length > 0) {
+        const subMenu = r.children.find((c) => {
+          const path = r.path + c.path;
+          return path === location.pathname
+        });
+
+        if (subMenu) {
+          subMenuMatched = subMenu;
+          return true;
+        };
+        return false;
+      }
+      return r.path === location.pathname
+    });
+
+    if (subMenuMatched) setPathKey(subMenuMatched.id);
+    else if (currPathKey) setPathKey(currPathKey.id);
 
     navigate(location.pathname);
   }, []);

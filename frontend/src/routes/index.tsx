@@ -2,6 +2,7 @@ import { DashboardPage } from '../pages/DashboardPage.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AppLayout } from '../layout/AppLayout.tsx';
 import { ProjectPage } from '../pages/ProjectPage.tsx';
+import { AssetTypePage } from '../pages/AssetTypePage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "type",
-            Component: () => <h1>Asset Type</h1>
+            Component: AssetTypePage
           }
         ]
       }
