@@ -2,11 +2,13 @@ import {
     ApartmentOutlined, 
     HomeOutlined,
     BorderOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
 
 export type AntIconType = 
     "ApartmentOutlined" |
-    "HomeOutlined";
+    "HomeOutlined" |
+    "SettingOutlined";
 
 export interface AntIconProps {
     icon: AntIconType;
@@ -26,6 +28,8 @@ function AntIcon(props: AntIconProps) {
         case "HomeOutlined":
             IconSelected = HomeOutlined;
             break
+        case "SettingOutlined":
+            IconSelected = SettingOutlined;
     }
 
     return <IconSelected />

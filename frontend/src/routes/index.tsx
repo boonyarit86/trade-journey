@@ -15,6 +15,15 @@ export const router = createBrowserRouter([
       {
         path: "/project",
         Component: ProjectPage,
+      },
+      {
+        path: "/asset",
+        children: [
+          {
+            path: "type",
+            Component: () => <h1>Asset Type</h1>
+          }
+        ]
       }
     ]
   },

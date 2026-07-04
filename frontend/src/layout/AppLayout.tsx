@@ -15,8 +15,30 @@ export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [pathKey, setPathKey] = useState("1");
 
-  const items2: MenuProps['items'] = useMemo(() => routePaths.map((r): ItemType => (
-    {
+  const items2: MenuProps['items'] = useMemo(() => routePaths.map((r): ItemType => {
+    if (r.children && r.children?.length > 0) {
+      const subMenus = r.children.map((c) => {
+        return {
+          key: c.id,
+          icon: <AntIcon icon={c.icon} />,
+          label: c.label,
+          onClick: () => {
+            const path = r.path + c.path;
+            setPathKey(r.id);
+            navigate(path);
+          },
+        }
+      })
+
+      return {
+        key: r.id,
+        icon: <AntIcon icon={r.icon} />,
+        label: r.label,
+        children: subMenus,
+      }
+    }
+
+    return {
       key: r.id,
       icon: <AntIcon icon={r.icon} />,
       label: r.label,
@@ -25,7 +47,7 @@ export function AppLayout() {
         navigate(r.path);
       },
     }
-  )), []);
+  }), []);
 
   useEffect(() => {
     const currPathKey = routePaths.find((r) => r.path === location.pathname);
