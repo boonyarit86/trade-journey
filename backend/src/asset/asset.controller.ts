@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { AssetService } from './asset.service';
 import { CreateAssetTypeDto } from './dto/create-asset.dto';
+import { UpdateAssetTypeDto } from './dto/update-asset.dto';
 
 @Controller('asset')
 export class AssetController {
@@ -17,7 +18,12 @@ export class AssetController {
     }
 
     @Post("/type")
-    createProject(@Body() data: CreateAssetTypeDto) {
+    createAssetType(@Body() data: CreateAssetTypeDto) {
         return this.assetService.createAssetType(data);
+    }
+
+    @Put("/type")
+    updateAssetTypeById(@Body() data: UpdateAssetTypeDto) {
+        return this.assetService.updateAssetTypeById(data);
     }
 }
