@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { AssetService } from './asset.service';
 import { CreateAssetTypeDto } from './dto/create-asset.dto';
 import { UpdateAssetTypeActiveStatusDto, UpdateAssetTypeDto } from './dto/update-asset.dto';
@@ -30,5 +30,10 @@ export class AssetController {
     @Put("/type/activeStatus")
     updateAssetTypeActiveStatusById(@Body() data: UpdateAssetTypeActiveStatusDto) {
         return this.assetService.updateAssetTypeActiveStatusById(data);
+    }
+
+    @Delete('/type/:id')
+    deleteAssetTypeById(@Param('id') id: string) {
+        return this.assetService.deleteAssetTypeById(id);
     }
 }

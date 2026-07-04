@@ -119,4 +119,14 @@ export class AssetService {
         );
         return;
     };
+
+    async deleteAssetTypeById(id: string) {
+        const pool = this.pgService.getPool();
+        await pool.query(
+            `DELETE FROM "common"."CM01_AssetType"
+                WHERE "CM01_Id" = $1`,
+            [id]
+        )
+        return;
+    };
 };
