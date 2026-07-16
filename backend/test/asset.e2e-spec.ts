@@ -2,11 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { PgService } from './../src/database/pg.service';
 
 describe('Asset endpoints (e2e)', () => {
   let app: INestApplication;
   let createdAssetTypeId: string;
-  let createdAssetId: string;
+  let createdAssetId: string | undefined;
+  const suffix = Date.now().toString().slice(-8);
+  const assetTypeName = `Type${suffix}`; // max 12 chars
+  const assetName = `XAU${suffix}`; // max 11 chars
+  const assetNameUpdated = `UPD${suffix}`; // max 11 chars
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,18 +23,29 @@ describe('Asset endpoints (e2e)', () => {
 
     const assetTypeResponse = await request(app.getHttpServer())
       .post('/asset/type')
-      .send({ name: 'Test Asset Type' })
+      .send({ name: assetTypeName })
       .expect(201);
     createdAssetTypeId = assetTypeResponse.body.data.id;
   });
 
   afterAll(async () => {
-    if (createdAssetTypeId) {
-      await request(app.getHttpServer())
-        .delete(`/asset/type/${createdAssetTypeId}`)
-        .expect(200);
+    try {
+      const pool = app.get(PgService).getPool();
+      if (createdAssetId) {
+        await pool.query(
+          `DELETE FROM "common"."CM02_Asset" WHERE "CM02_Id" = $1`,
+          [createdAssetId],
+        );
+      }
+      if (createdAssetTypeId) {
+        await pool.query(
+          `DELETE FROM "common"."CM01_AssetType" WHERE "CM01_Id" = $1`,
+          [createdAssetTypeId],
+        );
+      }
+    } catch {
+      // ignore cleanup errors
     }
-    await app.close();
   });
 
   describe('/asset (POST)', () => {
@@ -37,7 +53,7 @@ describe('Asset endpoints (e2e)', () => {
       return request(app.getHttpServer())
         .post('/asset')
         .send({
-          name: 'XAUUSD',
+          name: assetName,
           assetTypeId: createdAssetTypeId,
         })
         .expect(201)
@@ -97,14 +113,14 @@ describe('Asset endpoints (e2e)', () => {
         .put('/asset')
         .send({
           id: createdAssetId,
-          name: 'XAUUSD_UPDATED',
+          name: assetNameUpdated,
           assetTypeId: createdAssetTypeId,
           isActive: true,
         })
         .expect(200)
         .then((response) => {
           expect(response.body.data).toHaveProperty('id');
-          expect(response.body.data.name).toBe('XAUUSD_UPDATED');
+          expect(response.body.data.name).toBe(assetNameUpdated);
         });
     });
   });
@@ -125,7 +141,10 @@ describe('Asset endpoints (e2e)', () => {
     it('should delete an asset', () => {
       return request(app.getHttpServer())
         .delete(`/asset/${createdAssetId}`)
-        .expect(200);
+        .expect(200)
+        .then(() => {
+          createdAssetId = undefined;
+        });
     });
   });
 });
