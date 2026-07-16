@@ -1,0 +1,37 @@
+feature : Checklist
+description : the checklist that help the decision before executing a new order for trade
+
+section : backend
+
+
+create a file named “7_create_TD02_Checklist_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+
+“CREATE TABLE "trading_setup"."TD02_Checklist" (
+  "TD02_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  "TD02_Name" varchar(100) NOT NULL UNIQUE,
+  “TD02_IsRequired” boolean DEFAULT false NOT NULL,
+  "TD02_IsActive" boolean DEFAULT true NOT NULL,
+  "TD02_CreatedBy" varchar(30) NOT NULL,
+  "TD02_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "TD02_ModifiedBy" varchar(30) NOT NULL,
+  "TD02_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+create a file named “8_mtd_init_checklist_data.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+
+DO $$
+DECLARE
+    actor VARCHAR(30) := 'system';
+BEGIN
+    INSERT INTO "trading_setup"."TD02_Checklist"
+        ("TD02_Name", "TD02_CreatedBy", "TD02_ModifiedBy")
+    VALUES
+        (‘Without emotional’,   actor, actor),
+        ('Trading in specific time',  actor, actor),
+        ('Not consecutive loss 2 times',    actor, actor);
+END $$;
+
+for api endpoint, please follow all pattern of asset feature. but “Checklist” feature must create into new module or folder. you can Nestjs cmd to do it.
+do unit test and e2e test, and then mock data for only test
+
+If you have any question or any good for me, dont hesitant for telling me

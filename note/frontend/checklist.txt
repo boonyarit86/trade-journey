@@ -1,0 +1,11 @@
+feature : Checklist
+description : the checklist that help the decision before executing a new order for trade
+
+section : frontend
+create the parent “Trading Setup” menu on sidebar
+create “Checklist” menu below “Trading Setup”
+when click “Checklist” menu, show a table displaying all asset and able to create new, update it, delete it, toggle active status
+do unit test and e2e test, and then mock data for only test.
+integrate all api in backend section
+
+If you have any question or any good for me, dont hesitant for telling me
