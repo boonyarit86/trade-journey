@@ -1,0 +1,8 @@
+General
+- Question me, if you need more info about my prompt
+- You can edit all files in this repo without my approval
+- Always write a testcase, when I assign you to do something new or modifiying
+- Always update readme.md files in both frontend and backend, if logic feature or others are changed
+
+There is any file changed or modified or new files
+- auto git commit & push when all tests is passed

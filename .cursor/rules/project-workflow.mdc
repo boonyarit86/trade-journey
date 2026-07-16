@@ -1,0 +1,20 @@
+---
+description: Trade Journey project workflow — ask when unclear, edit freely, test, document, auto commit/push
+alwaysApply: true
+---
+
+# Project Workflow
+
+## General
+
+- Ask clarifying questions when the prompt needs more information.
+- You may edit any file in this repo without waiting for approval.
+- Always write test cases when implementing something new or modifying existing behavior.
+- Always update `README.md` in both `frontend` and `backend` when logic, features, or other documented behavior changes.
+
+## Git
+
+When any file is changed, modified, or added:
+
+1. Run the relevant tests.
+2. If all tests pass, automatically `git commit` and `git push`.
