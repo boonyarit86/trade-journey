@@ -45,6 +45,27 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Database migrations
+
+Migration SQL files live in [`src/migration/`](src/migration/) and are executed **only one time** each.
+
+- On app startup, the backend runs pending migrations automatically.
+- Executed migrations are tracked in Postgres table `public.schema_migrations` by filename.
+- To apply migrations manually (without starting the HTTP server):
+
+```bash
+cd backend
+npm run migrate
+```
+
+For production (after build):
+
+```bash
+cd backend
+npm run build
+npm run migrate:prod
+```
+
 ## Test
 
 ```bash

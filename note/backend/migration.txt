@@ -1,0 +1,5 @@
+I would like you to execute scripts in /backend/src/migration.
+For more detail
+- each script is executed only one time
+- create a command for me in package.json
+- summary in readme.md

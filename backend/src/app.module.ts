@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 import { PgModule } from './database/pg.module';
+import { MigrationModule } from './migration/migration.module';
 import { ProjectModule } from './project/project.module';
 import { AssetModule } from './asset/asset.module';
 
@@ -15,6 +16,7 @@ import { AssetModule } from './asset/asset.module';
       load: [databaseConfig, appConfig],
     }),
     PgModule,
+    MigrationModule,
     ProjectModule,
     AssetModule,
   ],
