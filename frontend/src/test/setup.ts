@@ -27,6 +27,14 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {}
 } as any;
 
+// Mock ResizeObserver (required by Ant Design Select component)
+global.ResizeObserver = class ResizeObserver {
+  constructor() {}
+  disconnect() {}
+  observe() {}
+  unobserve() {}
+} as any;
+
 // Mock Ant Design message to prevent notification updates during test cleanup
 vi.mock('antd', async () => {
   const actual = await vi.importActual('antd');

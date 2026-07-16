@@ -11,8 +11,11 @@ npm install
 # Start development server
 npm run dev
 
-# Run tests
+# Run unit tests
 npm run test
+
+# Run e2e tests (requires Playwright - see below)
+npm run test:e2e
 
 # Build for production
 npm run build
@@ -32,6 +35,7 @@ npm run lint
 - **Axios** - HTTP client
 - **Vitest** - Unit testing framework
 - **Testing Library** - React component testing
+- **Playwright** - End-to-end browser testing
 
 ## Features
 
@@ -48,15 +52,21 @@ npm run lint
 
 ### Trading Setup
 - **Checklist**: Pre-trade decision checklist management
-- Create custom checklist items (e.g., "Without emotional", "Trading in specific time")
-- Mark items as required or optional
-- Toggle active/inactive status
-- Full CRUD operations with modal forms
+  - Create custom checklist items (e.g., "Without emotional", "Trading in specific time")
+  - Mark items as required or optional
+  - Toggle active/inactive status
+  - Full CRUD operations with modal forms
+- **Strategy**: Trading strategy management
+  - Create strategies with name, risk/reward ratio, risk per trade %, and description
+  - Link one or many checklists to each strategy via multi-select
+  - Toggle active/inactive status
+  - Full CRUD operations; strategy queries always include linked checklists
 
 ### Testing
 - Comprehensive unit tests for API services
 - Component tests with React Testing Library
 - All tests passing with proper mocks and cleanup
+- Playwright e2e tests for the Strategy feature (`e2e/strategy.spec.ts`)
 
 ## API Integration
 
@@ -84,16 +94,19 @@ src/
 │   ├── ProjectPage.tsx
 │   ├── AssetTypePage.tsx
 │   ├── AssetItemPage.tsx
-│   └── ChecklistPage.tsx
+│   ├── ChecklistPage.tsx
+│   └── StrategyPage.tsx
 ├── features/                # Feature modules
 │   ├── auth/               # Authentication
 │   ├── dashboard/          # Dashboard
 │   ├── project/            # Project management
 │   ├── checklist/          # Trading checklist
+│   ├── strategy/           # Trading strategy (with checklist links)
 │   ├── asset/
 │   │   ├── assetType/     # Asset type CRUD
 │   │   └── assetItem/     # Asset item CRUD
 │   └── tasks/              # Task management
+├── e2e/                     # Playwright end-to-end tests
 ├── layout/                  # Layout components
 ├── shared/ui/              # Reusable UI components
 └── test/                   # Test configuration
@@ -114,6 +127,24 @@ src/
 - Mock data fixtures for consistent testing
 - All Ant Design components properly mocked for jsdom environment
 - Tests run in isolated forks for proper cleanup
+- Playwright e2e tests require a running dev server and backend
+
+### Playwright Setup (E2E)
+
+After `npm install`, install Playwright browsers once:
+
+```bash
+npx playwright install chromium
+```
+
+Then run e2e tests (starts dev server automatically):
+
+```bash
+npm run test:e2e
+```
+
+> Note: If `npm install` fails due to root-owned `node_modules`, fix permissions first:
+> `sudo chown -R $(whoami):staff node_modules`
 
 ## License
 
