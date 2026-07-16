@@ -9,6 +9,8 @@ import { MigrationModule } from './migration/migration.module';
 import { ProjectModule } from './project/project.module';
 import { AssetModule } from './asset/asset.module';
 import { ChecklistModule } from './checklist/checklist.module';
+import { StrategyModule } from './strategy/strategy.module';
+import { StrategyChecklistModule } from './strategy-checklist/strategy-checklist.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ChecklistModule } from './checklist/checklist.module';
     ProjectModule,
     AssetModule,
     ChecklistModule,
+    StrategyModule,
+    StrategyChecklistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

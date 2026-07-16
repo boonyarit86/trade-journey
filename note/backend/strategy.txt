@@ -1,0 +1,42 @@
+feature : Strategy
+
+description : n/a
+
+section : backend
+
+
+create a file named “9_create_TD03_Strategy_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+
+“CREATE TABLE "trading_setup"."TD03_Strategy" (
+  "TD03_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  "TD03_Name" varchar(50) NOT NULL UNIQUE,
+  “TD03_RiskRewardRatio” integer,
+  “TD03_RiskPerTrade” integer,
+  “TD03_Description” varchar(255),
+  "TD03_IsActive" boolean DEFAULT true NOT NULL,
+  "TD03_CreatedBy" varchar(30) NOT NULL,
+  "TD03_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "TD03_ModifiedBy" varchar(30) NOT NULL,
+  "TD03_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+create a file named “10_create_TD04_StrategyChecklist_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use. and this table has no primary key.
+
+“CREATE TABLE "trading_setup"."TD04_StrategyChecklist" (
+  "TD02_Id" uuid NOT NULL,
+  “TD03_Id” uuid NOT NULL,
+  "TD04_IsActive" boolean DEFAULT true NOT NULL,
+  “TD04_IsRequired” boolean DEFAULT false NOUT NULL,
+  "TD04_CreatedBy" varchar(30) NOT NULL,
+  "TD04_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "TD04_ModifiedBy" varchar(30) NOT NULL,
+  "TD04_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+for api endpoint, please follow all pattern of asset feature. but “Checklist” feature must create into new module or folder. you can Nestjs cmd to do it.
+for query of “TD03_Strategy” must always join TD04_StrategyChecklist.
+the relationship between TD03_Strategy and TD04_StrategyChecklist is one per many
+if TD04_IsRequired column is undefined, defaut value based on TD02_IsRequired column
+do unit test and e2e test, and then mock data for only test
+
+If you have any question or any good for me, dont hesitant for telling me
