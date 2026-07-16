@@ -10,7 +10,7 @@ import {
     updateStrategyActiveStatusById,
     updateStrategyById,
 } from "./services/strategyApi";
-import { createStrategyChecklist, deleteStrategyChecklist } from "./services/strategyChecklistApi";
+import { createStrategyChecklist, deleteStrategyChecklist, updateStrategyChecklistItem } from "./services/strategyChecklistApi";
 
 export function StrategyScreen() {
     const strategyQueryKey = "strategy";
@@ -53,16 +53,29 @@ export function StrategyScreen() {
     const updateStrategyMutation = useMutation({
         mutationFn: async (data: IStrategyForm) => {
             const existingStrategy = strategies.find((s) => s.id === data.id);
-            const existingChecklistIds = existingStrategy?.checklists.map((c) => c.checklistId) ?? [];
-            const newChecklistIds = data.checklistIds ?? [];
+            const existingLinks = existingStrategy?.checklists ?? [];
+            const newLinks = data.checklists ?? [];
 
             await updateStrategyById(data);
 
-            const toDelete = existingChecklistIds.filter((id) => !newChecklistIds.includes(id));
-            const toAdd = newChecklistIds.filter((id) => !existingChecklistIds.includes(id));
+            const toDelete = existingLinks.filter(
+                (e) => !newLinks.find((n) => n.checklistId === e.checklistId)
+            );
+            const toAdd = newLinks.filter(
+                (n) => !existingLinks.find((e) => e.checklistId === n.checklistId)
+            );
+            const toUpdate = newLinks.filter((n) => {
+                const existing = existingLinks.find((e) => e.checklistId === n.checklistId);
+                return existing && (existing.isRequired !== n.isRequired || existing.isActive !== n.isActive);
+            });
 
-            await Promise.all(toDelete.map((checklistId) => deleteStrategyChecklist(data.id, checklistId)));
-            await Promise.all(toAdd.map((checklistId) => createStrategyChecklist(data.id, checklistId)));
+            await Promise.all(toDelete.map((link) => deleteStrategyChecklist(data.id, link.checklistId)));
+            await Promise.all(toAdd.map((link) =>
+                createStrategyChecklist(data.id, link.checklistId, link.isRequired, link.isActive)
+            ));
+            await Promise.all(toUpdate.map((link) =>
+                updateStrategyChecklistItem(data.id, link.checklistId, link.isRequired, link.isActive)
+            ));
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [strategyQueryKey] });
@@ -78,8 +91,8 @@ export function StrategyScreen() {
         mutationFn: async (data: Omit<IStrategyForm, 'id' | 'isActive'>) => {
             const strategyId = await createStrategy(data);
             await Promise.all(
-                (data.checklistIds ?? []).map((checklistId) =>
-                    createStrategyChecklist(strategyId, checklistId)
+                (data.checklists ?? []).map((item) =>
+                    createStrategyChecklist(strategyId, item.checklistId, item.isRequired, item.isActive)
                 )
             );
             return strategyId;

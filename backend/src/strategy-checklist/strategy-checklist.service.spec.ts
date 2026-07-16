@@ -87,8 +87,8 @@ describe('StrategyChecklistService', () => {
     });
 
     describe('createStrategyChecklist', () => {
-        it('should create a link using provided isRequired', async () => {
-            const mockDto = { strategyId: 'strategy-1', checklistId: 'checklist-1', isRequired: true };
+        it('should create a link using provided isRequired and isActive', async () => {
+            const mockDto = { strategyId: 'strategy-1', checklistId: 'checklist-1', isRequired: true, isActive: false };
             mockQuery
                 .mockResolvedValueOnce({ rows: [{ TD03_Id: 'strategy-1' }] }) // strategy check
                 .mockResolvedValueOnce({ rows: [{ TD02_Id: 'checklist-1', TD02_IsRequired: false }] }) // checklist check
@@ -100,10 +100,11 @@ describe('StrategyChecklistService', () => {
             expect(result.data.checklistId).toBe('checklist-1');
             expect(mockQuery).toHaveBeenCalledTimes(3);
             const insertCall = mockQuery.mock.calls[2];
-            expect(insertCall[1]).toContain(true); // isRequired = true (overridden)
+            expect(insertCall[1]).toContain(true);  // isRequired = true (overridden)
+            expect(insertCall[1]).toContain(false); // isActive = false (overridden)
         });
 
-        it('should default isRequired from TD02_IsRequired when not provided', async () => {
+        it('should default isRequired from TD02_IsRequired and isActive to true when not provided', async () => {
             const mockDto = { strategyId: 'strategy-1', checklistId: 'checklist-1' };
             mockQuery
                 .mockResolvedValueOnce({ rows: [{ TD03_Id: 'strategy-1' }] }) // strategy check
@@ -114,6 +115,7 @@ describe('StrategyChecklistService', () => {
 
             const insertCall = mockQuery.mock.calls[2];
             expect(insertCall[1]).toContain(true); // isRequired defaults to TD02_IsRequired = true
+            expect(insertCall[1]).toContain(true); // isActive defaults to true
         });
 
         it('should throw error if strategy not found', async () => {

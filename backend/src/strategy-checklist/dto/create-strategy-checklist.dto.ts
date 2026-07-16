@@ -12,4 +12,8 @@ export class CreateStrategyChecklistDto {
     @IsBoolean()
     @IsOptional()
     isRequired?: boolean;
+
+    @IsBoolean()
+    @IsOptional()
+    isActive?: boolean;
 }

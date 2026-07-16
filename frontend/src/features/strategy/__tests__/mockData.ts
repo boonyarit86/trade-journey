@@ -1,4 +1,4 @@
-import type { IStrategy } from "../types";
+import type { IStrategy, IStrategyForm } from "../types";
 import type { IChecklist } from "../../checklist/types";
 
 export const mockChecklists: IChecklist[] = [
@@ -23,6 +23,19 @@ export const mockChecklists: IChecklist[] = [
         modifiedAt: new Date("2026-01-02"),
     },
 ];
+
+export const mockStrategyForm: IStrategyForm = {
+    id: 'st-1',
+    name: 'Breakout',
+    riskRewardRatio: 2,
+    riskPerTrade: 1,
+    description: 'Breakout strategy',
+    isActive: true,
+    checklists: [
+        { checklistId: 'cl-1', isRequired: false, isActive: true },
+        { checklistId: 'cl-2', isRequired: true, isActive: true },
+    ],
+};
 
 export const mockStrategies: IStrategy[] = [
     {

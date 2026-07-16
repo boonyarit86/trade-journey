@@ -77,11 +77,13 @@ export class StrategyChecklistService {
             ? body.isRequired
             : checklistCheck.rows[0].TD02_IsRequired;
 
+        const isActive = body.isActive !== undefined ? body.isActive : true;
+
         await pool.query(
             `INSERT INTO "trading_setup"."TD04_StrategyChecklist"
-            ("TD02_Id", "TD03_Id", "TD04_IsRequired", "TD04_CreatedBy", "TD04_ModifiedBy")
-            VALUES ($1, $2, $3, $4, $5)`,
-            [body.checklistId, body.strategyId, isRequired, authorName, authorName]
+            ("TD02_Id", "TD03_Id", "TD04_IsRequired", "TD04_IsActive", "TD04_CreatedBy", "TD04_ModifiedBy")
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+            [body.checklistId, body.strategyId, isRequired, isActive, authorName, authorName]
         );
 
         return {

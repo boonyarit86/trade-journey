@@ -18,6 +18,12 @@ export interface IStrategy {
     modifiedAt: Date;
 }
 
+export interface IStrategyFormChecklistItem {
+    checklistId: string;
+    isRequired: boolean;
+    isActive: boolean;
+}
+
 export interface IStrategyForm {
     id: string;
     name: string;
@@ -25,7 +31,7 @@ export interface IStrategyForm {
     riskPerTrade?: number;
     description?: string;
     isActive: boolean;
-    checklistIds: string[];
+    checklists: IStrategyFormChecklistItem[];
 }
 
 export type StrategyFormMode = "create" | "update";

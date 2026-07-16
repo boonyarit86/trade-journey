@@ -8,7 +8,7 @@ import {
     updateStrategyActiveStatusById,
     deleteStrategyById,
 } from '../services/strategyApi';
-import { createStrategyChecklist, deleteStrategyChecklist } from '../services/strategyChecklistApi';
+import { createStrategyChecklist, deleteStrategyChecklist, updateStrategyChecklistItem } from '../services/strategyChecklistApi';
 import { mockStrategies } from './mockData';
 
 vi.mock('axios');
@@ -78,7 +78,7 @@ describe('strategyApi', () => {
                 riskRewardRatio: 3,
                 riskPerTrade: 2,
                 isActive: true,
-                checklistIds: ['cl-1'],
+                checklists: [{ checklistId: 'cl-1', isRequired: false, isActive: true }],
             };
             vi.mocked(Axios.put).mockResolvedValue({ data: {} });
 
@@ -123,7 +123,18 @@ describe('strategyChecklistApi', () => {
     });
 
     describe('createStrategyChecklist', () => {
-        it('should create a strategy-checklist link', async () => {
+        it('should create a link with isRequired and isActive', async () => {
+            vi.mocked(Axios.post).mockResolvedValue({ data: {} });
+
+            await createStrategyChecklist('st-1', 'cl-1', true, false);
+
+            expect(Axios.post).toHaveBeenCalledWith(
+                expect.stringContaining('/strategy-checklist'),
+                { strategyId: 'st-1', checklistId: 'cl-1', isRequired: true, isActive: false }
+            );
+        });
+
+        it('should omit isRequired and isActive when not provided', async () => {
             vi.mocked(Axios.post).mockResolvedValue({ data: {} });
 
             await createStrategyChecklist('st-1', 'cl-1');
@@ -131,6 +142,19 @@ describe('strategyChecklistApi', () => {
             expect(Axios.post).toHaveBeenCalledWith(
                 expect.stringContaining('/strategy-checklist'),
                 { strategyId: 'st-1', checklistId: 'cl-1' }
+            );
+        });
+    });
+
+    describe('updateStrategyChecklistItem', () => {
+        it('should update isRequired and isActive for an existing link', async () => {
+            vi.mocked(Axios.put).mockResolvedValue({ data: {} });
+
+            await updateStrategyChecklistItem('st-1', 'cl-1', true, false);
+
+            expect(Axios.put).toHaveBeenCalledWith(
+                expect.stringContaining('/strategy-checklist'),
+                { strategyId: 'st-1', checklistId: 'cl-1', isRequired: true, isActive: false }
             );
         });
     });
