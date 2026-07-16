@@ -123,8 +123,9 @@ describe('ChecklistScreen', () => {
         renderComponent();
 
         await waitFor(() => {
-            expect(screen.queryByText('Required')).toBeTruthy();
-            expect(screen.queryByText('Optional')).toBeTruthy();
+            expect(screen.getByText('Without emotional')).toBeDefined();
+            const table = screen.getByRole('table');
+            expect(table).toBeDefined();
         });
     });
 });
