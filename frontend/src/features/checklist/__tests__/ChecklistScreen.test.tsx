@@ -28,7 +28,7 @@ describe('ChecklistScreen', () => {
     afterEach(async () => {
         cleanup();
         queryClient.clear();
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 100));
     });
 
     const renderComponent = () => {
