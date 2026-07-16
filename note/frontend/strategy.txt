@@ -1,0 +1,12 @@
+feature : Strategy
+
+description : n/a
+
+section : frontend
+create “Strategy” menu below “Trading Setup”
+when click “Strategy” menu, show a table displaying all asset and able to create new, update it, delete it, toggle active status
+in the form, must be able to select checklist (one or many)
+do unit test and e2e test, and then mock data for only test.
+integrate all api in backend section
+
+If you have any question or any good for me, dont hesitant for telling me
