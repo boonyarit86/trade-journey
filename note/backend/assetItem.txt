@@ -1,0 +1,75 @@
+section : backend
+
+create a file named “5_create_CM02_Asset_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+
+“CREATE TABLE "common"."CM02_Asset" (
+  "CM02_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  “CM01_Id” uuid NOT NULL,
+  "CM02_Name" varchar(20) NOT NULL UNIQUE,
+  "CM02_IsActive" boolean DEFAULT true NOT NULL,
+  "CM02_CreatedBy" varchar(30) NOT NULL,
+  "CM02_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "CM02_ModifiedBy" varchar(30) NOT NULL,
+  "CM02_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+create a API endpoint to fetch all asset.
+info
+the parent’s CM02_Asset is CM01_AssetType. CM02_Asset bind with the parent using CM01_Id
+the sample value describe about its relationship. CM01_Name = “Gold” and CM02_Name = “XAUUSD”
+2.1. create a route
+path : /asset
+method : GET”asset.controller.ts” : set route here
+2.2. create a service”asset.service.ts” : create the service here
+in service I would like you do
+fetch data from CM02 table and join with CM01 table
+the API response, please follow other endpoint
+
+create a API endpoint to get one asset
+path : /asset/:id
+method : GET”asset.service.ts” : create the service herein service I would like you do
+the logic is the same as “fetch all asset” api
+
+create a API endpoint to create asset
+path : /asset
+method : POSTcontent-type : application-jsonbody info :
+name : string, required
+assetTypeId : string, required
+”asset.service.ts” : create the service herein service I would like you do
+validate the body
+validate asset type exist by assetTypeId at CM01_Asset table
+default createdBy and updatedBy is “admin”
+the API response, please follow other endpoint
+
+create a API endpoint to update asset
+path : /asset
+method : PUTcontent-type : application-jsonbody info :
+id : string, required
+name : string, required
+assetTypeId : string, required
+isActive : boolean, default = true
+”asset.service.ts” : create the service herein service I would like you do
+validate the body
+validate asset type exist by assetTypeId at CM01_Asset table
+default updatedBy is “admin”
+the API response, please follow other endpoint
+
+create a API endpoint to update asset active status
+path : /asset/activeStatus
+method : PUTcontent-type : application-jsonbody info :
+assetTypeId : string, required
+isActive : boolean, default = true
+”asset.service.ts” : create the service herein service I would like you do
+validate asset type exist by assetTypeId at CM01_Asset table
+default updatedBy is “admin”
+the API response, please follow other endpoint
+
+create a API endpoint to delete asset
+path : /asset/:id
+method : DELETEcontent-type : application-json
+”asset.service.ts” : create the service herein service I would like you do
+default updatedBy is “admin”
+the API response, please follow other endpoint
+
+
+8. do unit test and e2e test, and then mock data for only test

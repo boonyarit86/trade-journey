@@ -1,0 +1,8 @@
+section : frontend
+
+create a menu “asset item” in “asset” menu
+when click “asset item” menu, show a table displaying all asset and able to create new, update it, delete it, toggle active status
+do unit test and e2e test, and then mock data for only test. you can use any library
+integrate all api in backend section
+
+If you have any question, please ask

@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Trade Journey Backend - A NestJS application for managing trading assets and projects with PostgreSQL database.
 
 ## Installation
 
@@ -65,6 +65,43 @@ cd backend
 npm run build
 npm run migrate:prod
 ```
+
+## API Endpoints
+
+### Asset Management
+
+**Asset Types** (`/asset/type`)
+- `GET /asset/type` - List all asset types
+- `GET /asset/type/:id` - Get asset type by ID
+- `POST /asset/type` - Create new asset type
+- `PUT /asset/type` - Update asset type
+- `PUT /asset/type/activeStatus` - Toggle asset type active status
+- `DELETE /asset/type/:id` - Delete asset type
+
+**Assets** (`/asset`)
+- `GET /asset` - List all assets (with joined asset type data)
+- `GET /asset/:id` - Get asset by ID
+- `POST /asset` - Create new asset
+- `PUT /asset` - Update asset
+- `PUT /asset/activeStatus` - Toggle asset active status
+- `DELETE /asset/:id` - Delete asset
+
+**Projects** (`/project`)
+- `GET /project` - List all projects
+- `GET /project/:id` - Get project by ID
+- `POST /project` - Create new project
+- `PUT /project` - Update project
+- `PUT /project/activeStatus` - Toggle project active status
+- `DELETE /project/:id` - Delete project
+
+## Database Schema
+
+### Common Schema
+- `CM01_AssetType` - Asset type definitions (Gold, Forex, Stocks, etc.)
+- `CM02_Asset` - Trading assets (XAUUSD, EURUSD, etc.) with foreign key to CM01
+
+### Trading Setup Schema
+- `TD01_Project` - Trading projects
 
 ## Test
 

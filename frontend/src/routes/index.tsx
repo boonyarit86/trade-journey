@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AppLayout } from '../layout/AppLayout.tsx';
 import { ProjectPage } from '../pages/ProjectPage.tsx';
 import { AssetTypePage } from '../pages/AssetTypePage.tsx';
+import { AssetItemPage } from '../pages/AssetItemPage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
           {
             path: "type",
             Component: AssetTypePage
+          },
+          {
+            path: "item",
+            Component: AssetItemPage
           }
         ]
       }
