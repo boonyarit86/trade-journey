@@ -94,6 +94,16 @@ npm run migrate:prod
 - `PUT /project/activeStatus` - Toggle project active status
 - `DELETE /project/:id` - Delete project
 
+### Trading Setup
+
+**Checklist** (`/checklist`)
+- `GET /checklist` - List all checklists
+- `GET /checklist/:id` - Get checklist by ID
+- `POST /checklist` - Create new checklist
+- `PUT /checklist` - Update checklist
+- `PUT /checklist/activeStatus` - Toggle checklist active status
+- `DELETE /checklist/:id` - Delete checklist
+
 ## Database Schema
 
 ### Common Schema
@@ -101,7 +111,8 @@ npm run migrate:prod
 - `CM02_Asset` - Trading assets (XAUUSD, EURUSD, etc.) with foreign key to CM01
 
 ### Trading Setup Schema
-- `TD01_Project` - Trading projects
+- `TB01_Project` - Trading projects
+- `TD02_Checklist` - Pre-trade decision checklist items
 
 ## Test
 

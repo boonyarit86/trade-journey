@@ -46,6 +46,13 @@ npm run lint
 - Track project status and metadata
 - Full CRUD operations
 
+### Trading Setup
+- **Checklist**: Pre-trade decision checklist management
+- Create custom checklist items (e.g., "Without emotional", "Trading in specific time")
+- Mark items as required or optional
+- Toggle active/inactive status
+- Full CRUD operations with modal forms
+
 ### Testing
 - Comprehensive unit tests for API services
 - Component tests with React Testing Library
@@ -76,11 +83,13 @@ src/
 │   ├── DashboardPage.tsx
 │   ├── ProjectPage.tsx
 │   ├── AssetTypePage.tsx
-│   └── AssetItemPage.tsx
+│   ├── AssetItemPage.tsx
+│   └── ChecklistPage.tsx
 ├── features/                # Feature modules
 │   ├── auth/               # Authentication
 │   ├── dashboard/          # Dashboard
 │   ├── project/            # Project management
+│   ├── checklist/          # Trading checklist
 │   ├── asset/
 │   │   ├── assetType/     # Asset type CRUD
 │   │   └── assetItem/     # Asset item CRUD

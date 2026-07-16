@@ -8,6 +8,7 @@ import { PgModule } from './database/pg.module';
 import { MigrationModule } from './migration/migration.module';
 import { ProjectModule } from './project/project.module';
 import { AssetModule } from './asset/asset.module';
+import { ChecklistModule } from './checklist/checklist.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AssetModule } from './asset/asset.module';
     MigrationModule,
     ProjectModule,
     AssetModule,
+    ChecklistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

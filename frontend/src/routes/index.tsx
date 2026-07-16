@@ -4,6 +4,7 @@ import { AppLayout } from '../layout/AppLayout.tsx';
 import { ProjectPage } from '../pages/ProjectPage.tsx';
 import { AssetTypePage } from '../pages/AssetTypePage.tsx';
 import { AssetItemPage } from '../pages/AssetItemPage.tsx';
+import { ChecklistPage } from '../pages/ChecklistPage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,15 @@ export const router = createBrowserRouter([
           {
             path: "item",
             Component: AssetItemPage
+          }
+        ]
+      },
+      {
+        path: "/trading-setup",
+        children: [
+          {
+            path: "checklist",
+            Component: ChecklistPage
           }
         ]
       }

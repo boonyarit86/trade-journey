@@ -14,4 +14,7 @@ export const routePaths: IRoutePath[] = [
         {id: "3.1", icon: "SettingOutlined", label: "Asset Type", path: "/type"},
         {id: "3.2", icon: "SettingOutlined", label: "Asset Item", path: "/item"},
     ]},
+    {id: "4", icon: "SettingOutlined", label: "Trading Setup", path: "/trading-setup", children: [
+        {id: "4.1", icon: "CheckSquareOutlined", label: "Checklist", path: "/checklist"},
+    ]},
 ];
