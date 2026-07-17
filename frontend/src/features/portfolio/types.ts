@@ -25,6 +25,9 @@ export interface IPortfolio {
     totalWinTrade: number;
     totalLossTrade: number;
     winRatePercent: number;
+    totalBreakEven?: number;
+    sumTotalBreakEven?: number;
+    cm05Value?: string | null;
     description: string | null;
     isActive: boolean;
     createdBy: string;

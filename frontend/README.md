@@ -33,6 +33,7 @@ npm run lint
 - **React Router 7** - Client-side routing
 - **TanStack Query 5** - Server state management
 - **Axios** - HTTP client
+- **Recharts 2** - Charting library (balance and drawdown charts)
 - **Vitest** - Unit testing framework
 - **Testing Library** - React component testing
 - **Playwright** - End-to-end browser testing
@@ -68,6 +69,23 @@ npm run lint
   - Current balance (%) is computed client-side as `((currentBalance - initBalance) / initBalance) * 100`, colored green for gains and red for losses
   - A column filter on Project lets you narrow the table down to a specific project
   - Toggle active/inactive status, edit via "View", and delete; full CRUD operations
+
+### General Setting
+- **Trade Result**: Manage transaction result statuses (Win, Loss, Break Even, Cancel, Pending) with a color badge; create/update and toggle active status (no deletion)
+
+### Dashboard & Transactions
+The Dashboard is the landing page (`/`) and is a full trading overview built around portfolios and their transactions:
+- Select a **Project** to filter the **Portfolio** list, then select a portfolio to load its data
+- **Summary cards** (Ant Design `Statistic`): current balance, profit/loss amount with a colored percentage badge (vs. init balance), win rate, total/win/loss/break-even trades, and max profit/loss
+- **Balance Over Time** line chart and **Drawdown (%)** area chart (Recharts), computed from the portfolio's init balance and its transactions
+- **Daily Profit / Loss** calendar (Ant Design `Calendar`) showing a colored badge with each day's net P/L
+- **Transactions** table listing each trade's date, result (colored tag), signed amount, and fees
+- **New Transaction** modal (create only):
+  - Disabled until a portfolio is selected
+  - If the portfolio has a linked strategy, its checklist is shown and all required items must be checked before the form can be submitted
+  - For a Loss, the amount is validated against the current balance; submit is blocked when there is not enough balance
+  - Fields: result (Win / Loss / Break Even), amount, and fees
+- Creating a transaction updates the portfolio statistics on the backend; the dashboard invalidates the portfolio and transaction queries so the summary, charts, and table refresh automatically
 
 ### Testing
 - Comprehensive unit tests for API services
@@ -111,6 +129,8 @@ src/
 │   ├── checklist/          # Trading checklist
 │   ├── strategy/           # Trading strategy (with checklist links)
 │   ├── portfolio/          # Trading portfolio (joins project/asset/strategy)
+│   ├── transaction/        # Transaction API + types (used by the dashboard)
+│   ├── transactionStatus/  # Trade Result (transaction status) CRUD
 │   ├── asset/
 │   │   ├── assetType/     # Asset type CRUD
 │   │   └── assetItem/     # Asset item CRUD

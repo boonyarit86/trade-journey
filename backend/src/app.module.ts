@@ -13,6 +13,7 @@ import { StrategyModule } from './strategy/strategy.module';
 import { StrategyChecklistModule } from './strategy-checklist/strategy-checklist.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { TransactionStatusModule } from './transaction-status/transaction-status.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TransactionStatusModule } from './transaction-status/transaction-status
     StrategyChecklistModule,
     PortfolioModule,
     TransactionStatusModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

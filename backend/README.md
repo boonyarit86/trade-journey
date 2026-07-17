@@ -122,6 +122,39 @@ npm run migrate:prod
 
 Validation on `/portfolio` is enforced via a `ValidationPipe` scoped to `PortfolioController` only, so invalid payloads return `400` (this does not apply to other modules).
 
+### General Setting
+
+**Trade Result / Transaction Status** (`/transaction-status`)
+- `GET /transaction-status` - List all transaction statuses (W, L, B, C, P)
+- `GET /transaction-status/:id` - Get transaction status by ID
+- `POST /transaction-status` - Create new transaction status
+- `PUT /transaction-status` - Update transaction status
+- `PUT /transaction-status/activeStatus` - Toggle active status
+
+### Transaction
+
+**Transaction** (`/transaction`) - read & create only
+
+- `GET /transaction` - List all transactions (joined with Portfolio name and Transaction Status text/color). Optional query `?portfolioId=<id>` filters by portfolio.
+- `GET /transaction/:id` - Get transaction by ID.
+- `POST /transaction` - Create a transaction and atomically update the linked portfolio's statistics in a single DB transaction.
+
+Body: `{ portfolioId, amount, fees?, resultValue }` where `resultValue` is one of `W` (win), `L` (loss), `B` (break-even). Any other value (e.g. `C`, `P`) is rejected with `400`.
+
+Create logic (all within one DB transaction):
+- The portfolio row is locked with `SELECT ... FOR UPDATE`; a missing portfolio returns `404`.
+- `fees` is stored on the transaction row but does not affect the portfolio balance.
+- After each create, the portfolio's `CM05_Value` is set to the new transaction's result.
+- Win rate is recomputed as `round(win / (win + loss) * 100)` (`0` when there are no W/L trades).
+
+**Win (`W`)**: `currentBalance += amount`; consecutive win `+= 1`; consecutive loss reset to `0`; `sumConsecutiveWin` and `maxProfitAmount` updated to running maxima; total trade `+= 1`; total win `+= 1`; total break-even reset to `0`.
+
+**Loss (`L`)**: rejected with `400` if `currentBalance < amount`; otherwise `currentBalance -= amount`; consecutive loss `+= 1`; consecutive win reset to `0`; `sumConsecutiveLoss` and `maxLossAmount` updated to running maxima; total trade `+= 1`; total loss `+= 1`; total break-even reset to `0`.
+
+**Break-even (`B`)**: `currentBalance` unchanged; total trade `+= 1`; total break-even `+= 1`; `sumTotalBreakEven` updated to running maximum. Consecutive win/loss streaks are left untouched.
+
+Validation on `/transaction` is enforced via a `ValidationPipe` scoped to `TransactionController`.
+
 ## Database Schema
 
 ### Common Schema
@@ -132,7 +165,13 @@ Validation on `/portfolio` is enforced via a `ValidationPipe` scoped to `Portfol
 - `TD01_Project` - Trading projects
 - `TD02_Checklist` - Pre-trade decision checklist items
 - `TD03_Strategy` - Trading strategies (with linked checklists via `TD04_StrategyChecklist`)
-- `TD05_Portfolio` - Trading portfolios; each portfolio belongs to one Project (many-per-one), references exactly one Asset (one-per-one), and optionally one Strategy (one-per-one). Accumulates trade statistics (consecutive win/loss streaks, max profit/loss, total trades, win rate, etc.) that are updated by future trade-recording features.
+- `TD05_Portfolio` - Trading portfolios; each portfolio belongs to one Project (many-per-one), references exactly one Asset (one-per-one), and optionally one Strategy (one-per-one). Accumulates trade statistics (consecutive win/loss streaks, max profit/loss, total trades, win rate, etc.) that are updated when transactions are created.
+
+### Common Schema (Trade Result)
+- `CM03_TransactionStatus` - Transaction result definitions (W = win, L = loss, B = break even, C = cancel, P = pending) with a color code used by the frontend.
+
+### Transaction Schema
+- `TS01_Transaction` - Recorded trades belonging to a portfolio (`TD05_Id`). Stores `TS01_Amount`, `TS01_Fees`, and `CM03_Value` (the result). Creating a row atomically updates the parent `TD05_Portfolio` statistics.
 
 ## Test
 
