@@ -4,13 +4,15 @@ import {
     BorderOutlined,
     SettingOutlined,
     CheckSquareOutlined,
+    WalletOutlined,
 } from '@ant-design/icons';
 
 export type AntIconType = 
     "ApartmentOutlined" |
     "HomeOutlined" |
     "SettingOutlined" |
-    "CheckSquareOutlined";
+    "CheckSquareOutlined" |
+    "WalletOutlined";
 
 export interface AntIconProps {
     icon: AntIconType;
@@ -35,6 +37,9 @@ function AntIcon(props: AntIconProps) {
             break;
         case "CheckSquareOutlined":
             IconSelected = CheckSquareOutlined;
+            break;
+        case "WalletOutlined":
+            IconSelected = WalletOutlined;
             break;
     }
 

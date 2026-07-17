@@ -1,0 +1,166 @@
+import type { IPortfolio, IPortfolioForm } from "../types";
+import type { IProject } from "../../project/types";
+import type { IAsset } from "../../asset/assetItem/types";
+import type { IStrategy } from "../../strategy/types";
+import type { IChecklist } from "../../checklist/types";
+
+export const mockProjects: IProject[] = [
+    {
+        id: "proj-1",
+        name: "Forex Journey",
+        isDefault: true,
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-01"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-01"),
+    },
+    {
+        id: "proj-2",
+        name: "Gold Journey",
+        isDefault: false,
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-02"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-02"),
+    },
+];
+
+export const mockAssets: IAsset[] = [
+    {
+        id: "asset-1",
+        assetTypeId: "asset-type-1",
+        assetTypeName: "Gold",
+        name: "XAUUSD",
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-01"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-01"),
+    },
+    {
+        id: "asset-2",
+        assetTypeId: "asset-type-2",
+        assetTypeName: "Forex",
+        name: "EURUSD",
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-02"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-02"),
+    },
+];
+
+export const mockChecklists: IChecklist[] = [
+    {
+        id: "cl-1",
+        name: "Without emotional",
+        isRequired: false,
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-01"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-01"),
+    },
+];
+
+export const mockStrategies: IStrategy[] = [
+    {
+        id: "st-1",
+        name: "Breakout",
+        riskRewardRatio: 2,
+        riskPerTrade: 1,
+        description: "Breakout strategy",
+        isActive: true,
+        checklists: [
+            { checklistId: "cl-1", isActive: true, isRequired: false },
+        ],
+        createdBy: "admin",
+        createdAt: new Date("2026-01-01"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-01"),
+    },
+];
+
+export const mockPortfolioForm: IPortfolioForm = {
+    id: 'port-1',
+    name: 'Main Portfolio',
+    projectId: 'proj-1',
+    assetId: 'asset-1',
+    strategyId: 'st-1',
+    initBalance: 1000,
+    description: 'My main trading portfolio',
+    isActive: true,
+};
+
+export const mockPortfolios: IPortfolio[] = [
+    {
+        id: "port-1",
+        projectId: "proj-1",
+        projectName: "Forex Journey",
+        assetId: "asset-1",
+        assetName: "XAUUSD",
+        assetTypeName: "Gold",
+        strategyId: "st-1",
+        strategyName: "Breakout",
+        name: "Main Portfolio",
+        initBalance: 1000,
+        currentBalance: 1200,
+        totalConsecutiveWin: 3,
+        totalConsecutiveLoss: 1,
+        totalConsecutiveWinDay: 2,
+        totalConsecutiveLossDay: 1,
+        sumTotalConsecutiveWin: 5,
+        sumTotalConsecutiveLoss: 2,
+        sumTotalConsecutiveWinDay: 3,
+        sumTotalConsecutiveLossDay: 1,
+        maxProfitAmount: 300,
+        maxLossAmount: 100,
+        averageRiskRewardRatio: 2,
+        totalTrade: 20,
+        totalWinTrade: 14,
+        totalLossTrade: 6,
+        winRatePercent: 70,
+        description: "My main trading portfolio",
+        isActive: true,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-01"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-01"),
+    },
+    {
+        id: "port-2",
+        projectId: "proj-2",
+        projectName: "Gold Journey",
+        assetId: "asset-1",
+        assetName: "XAUUSD",
+        assetTypeName: "Gold",
+        strategyId: null,
+        strategyName: null,
+        name: "No Strategy Portfolio",
+        initBalance: 500,
+        currentBalance: 400,
+        totalConsecutiveWin: 0,
+        totalConsecutiveLoss: 0,
+        totalConsecutiveWinDay: 0,
+        totalConsecutiveLossDay: 0,
+        sumTotalConsecutiveWin: 0,
+        sumTotalConsecutiveLoss: 0,
+        sumTotalConsecutiveWinDay: 0,
+        sumTotalConsecutiveLossDay: 0,
+        maxProfitAmount: 0,
+        maxLossAmount: 100,
+        averageRiskRewardRatio: 0,
+        totalTrade: 5,
+        totalWinTrade: 2,
+        totalLossTrade: 3,
+        winRatePercent: 40,
+        description: null,
+        isActive: false,
+        createdBy: "admin",
+        createdAt: new Date("2026-01-02"),
+        modifiedBy: "admin",
+        modifiedAt: new Date("2026-01-02"),
+    },
+];

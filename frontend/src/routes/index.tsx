@@ -6,6 +6,7 @@ import { AssetTypePage } from '../pages/AssetTypePage.tsx';
 import { AssetItemPage } from '../pages/AssetItemPage.tsx';
 import { ChecklistPage } from '../pages/ChecklistPage.tsx';
 import { StrategyPage } from '../pages/StrategyPage.tsx';
+import { PortfolioPage } from '../pages/PortfolioPage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
           {
             path: "strategy",
             Component: StrategyPage
+          },
+          {
+            path: "portfolio",
+            Component: PortfolioPage
           }
         ]
       }

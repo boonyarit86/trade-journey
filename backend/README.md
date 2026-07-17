@@ -104,6 +104,24 @@ npm run migrate:prod
 - `PUT /checklist/activeStatus` - Toggle checklist active status
 - `DELETE /checklist/:id` - Delete checklist
 
+**Strategy** (`/strategy`)
+- `GET /strategy` - List all strategies (with linked checklists)
+- `GET /strategy/:id` - Get strategy by ID
+- `POST /strategy` - Create new strategy
+- `PUT /strategy` - Update strategy
+- `PUT /strategy/activeStatus` - Toggle strategy active status
+- `DELETE /strategy/:id` - Delete strategy
+
+**Portfolio** (`/portfolio`)
+- `GET /portfolio` - List all portfolios (always joined with Project, Asset + Asset Type, and Strategy)
+- `GET /portfolio/:id` - Get portfolio by ID (same joins as above)
+- `POST /portfolio` - Create new portfolio. `TD05_CurrentBalance` is automatically set to the provided `initBalance` on creation
+- `PUT /portfolio` - Update portfolio (name, project, asset, strategy, init balance, description, active status)
+- `PUT /portfolio/activeStatus` - Toggle portfolio active status
+- `DELETE /portfolio/:id` - Delete portfolio
+
+Validation on `/portfolio` is enforced via a `ValidationPipe` scoped to `PortfolioController` only, so invalid payloads return `400` (this does not apply to other modules).
+
 ## Database Schema
 
 ### Common Schema
@@ -111,8 +129,10 @@ npm run migrate:prod
 - `CM02_Asset` - Trading assets (XAUUSD, EURUSD, etc.) with foreign key to CM01
 
 ### Trading Setup Schema
-- `TB01_Project` - Trading projects
+- `TD01_Project` - Trading projects
 - `TD02_Checklist` - Pre-trade decision checklist items
+- `TD03_Strategy` - Trading strategies (with linked checklists via `TD04_StrategyChecklist`)
+- `TD05_Portfolio` - Trading portfolios; each portfolio belongs to one Project (many-per-one), references exactly one Asset (one-per-one), and optionally one Strategy (one-per-one). Accumulates trade statistics (consecutive win/loss streaks, max profit/loss, total trades, win rate, etc.) that are updated by future trade-recording features.
 
 ## Test
 

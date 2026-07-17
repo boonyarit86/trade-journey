@@ -11,6 +11,7 @@ import { AssetModule } from './asset/asset.module';
 import { ChecklistModule } from './checklist/checklist.module';
 import { StrategyModule } from './strategy/strategy.module';
 import { StrategyChecklistModule } from './strategy-checklist/strategy-checklist.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { StrategyChecklistModule } from './strategy-checklist/strategy-checklist
     ChecklistModule,
     StrategyModule,
     StrategyChecklistModule,
+    PortfolioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

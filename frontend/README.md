@@ -61,12 +61,19 @@ npm run lint
   - Link one or many checklists to each strategy via multi-select
   - Toggle active/inactive status
   - Full CRUD operations; strategy queries always include linked checklists
+- **Portfolio**: Trading portfolio management
+  - Create a portfolio by selecting an existing Project and Asset (both required), setting a name and starting balance, and optionally linking a Strategy
+  - Selecting a Strategy shows a read-only preview of its risk/reward ratio, risk per trade, description, and linked checklist
+  - Table shows active status, portfolio name, project name, init balance, current balance (%), strategy name, total trade, win rate, and asset type name
+  - Current balance (%) is computed client-side as `((currentBalance - initBalance) / initBalance) * 100`, colored green for gains and red for losses
+  - A column filter on Project lets you narrow the table down to a specific project
+  - Toggle active/inactive status, edit via "View", and delete; full CRUD operations
 
 ### Testing
 - Comprehensive unit tests for API services
 - Component tests with React Testing Library
 - All tests passing with proper mocks and cleanup
-- Playwright e2e tests for the Strategy feature (`e2e/strategy.spec.ts`)
+- Playwright e2e tests for the Strategy feature (`e2e/strategy.spec.ts`) and the Portfolio feature (`e2e/portfolio.spec.ts`)
 
 ## API Integration
 
@@ -95,13 +102,15 @@ src/
 │   ├── AssetTypePage.tsx
 │   ├── AssetItemPage.tsx
 │   ├── ChecklistPage.tsx
-│   └── StrategyPage.tsx
+│   ├── StrategyPage.tsx
+│   └── PortfolioPage.tsx
 ├── features/                # Feature modules
 │   ├── auth/               # Authentication
 │   ├── dashboard/          # Dashboard
 │   ├── project/            # Project management
 │   ├── checklist/          # Trading checklist
 │   ├── strategy/           # Trading strategy (with checklist links)
+│   ├── portfolio/          # Trading portfolio (joins project/asset/strategy)
 │   ├── asset/
 │   │   ├── assetType/     # Asset type CRUD
 │   │   └── assetItem/     # Asset item CRUD
