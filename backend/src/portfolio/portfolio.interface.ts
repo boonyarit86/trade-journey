@@ -21,6 +21,9 @@ export interface IPortfolioRow {
     TD05_TotalWinTrade: number;
     TD05_TotalLossTrade: number;
     TD05_WinRatePercent: number;
+    TD05_TotalBreakEven: number;
+    TD05_SumTotalBreakEven: number;
+    CM05_Value: string | null;
     TD05_Description: string | null;
     TD05_IsActive: boolean;
     TD05_CreatedBy: string;
@@ -60,6 +63,9 @@ export interface IPortfolio {
     totalWinTrade: number;
     totalLossTrade: number;
     winRatePercent: number;
+    totalBreakEven: number;
+    sumTotalBreakEven: number;
+    cm05Value: string | null;
     description: string | null;
     isActive: boolean;
     createdBy: string;

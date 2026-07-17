@@ -32,6 +32,9 @@ describe('PortfolioService', () => {
             TD05_TotalWinTrade: 0,
             TD05_TotalLossTrade: 0,
             TD05_WinRatePercent: 0,
+            TD05_TotalBreakEven: 0,
+            TD05_SumTotalBreakEven: 0,
+            CM05_Value: null,
             TD05_Description: null,
             TD05_IsActive: true,
             TD05_CreatedBy: 'admin',
@@ -88,6 +91,9 @@ describe('PortfolioService', () => {
             expect(result.data[0].assetName).toBe('XAUUSD');
             expect(result.data[0].assetTypeName).toBe('Gold');
             expect(result.data[0].strategyName).toBe('Breakout');
+            expect(result.data[0].totalBreakEven).toBe(0);
+            expect(result.data[0].sumTotalBreakEven).toBe(0);
+            expect(result.data[0].cm05Value).toBeNull();
         });
 
         it('should return null strategy fields when no strategy is linked', async () => {
@@ -100,6 +106,19 @@ describe('PortfolioService', () => {
 
             expect(result.data[0].strategyId).toBeNull();
             expect(result.data[0].strategyName).toBeNull();
+        });
+
+        it('should map CM05_Value when present', async () => {
+            mockQuery.mockResolvedValue({
+                rows: [buildRow({ CM05_Value: 'W', TD05_TotalBreakEven: 2, TD05_SumTotalBreakEven: 5 })],
+                rowCount: 1,
+            });
+
+            const result = await service.getAllPortfolios();
+
+            expect(result.data[0].cm05Value).toBe('W');
+            expect(result.data[0].totalBreakEven).toBe(2);
+            expect(result.data[0].sumTotalBreakEven).toBe(5);
         });
     });
 
