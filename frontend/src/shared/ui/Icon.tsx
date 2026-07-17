@@ -5,6 +5,7 @@ import {
     SettingOutlined,
     CheckSquareOutlined,
     WalletOutlined,
+    SwapOutlined,
 } from '@ant-design/icons';
 
 export type AntIconType = 
@@ -12,7 +13,8 @@ export type AntIconType =
     "HomeOutlined" |
     "SettingOutlined" |
     "CheckSquareOutlined" |
-    "WalletOutlined";
+    "WalletOutlined" |
+    "SwapOutlined";
 
 export interface AntIconProps {
     icon: AntIconType;
@@ -40,6 +42,9 @@ function AntIcon(props: AntIconProps) {
             break;
         case "WalletOutlined":
             IconSelected = WalletOutlined;
+            break;
+        case "SwapOutlined":
+            IconSelected = SwapOutlined;
             break;
     }
 

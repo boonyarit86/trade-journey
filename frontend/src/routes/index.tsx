@@ -7,6 +7,7 @@ import { AssetItemPage } from '../pages/AssetItemPage.tsx';
 import { ChecklistPage } from '../pages/ChecklistPage.tsx';
 import { StrategyPage } from '../pages/StrategyPage.tsx';
 import { PortfolioPage } from '../pages/PortfolioPage.tsx';
+import TradeResultPage from '../pages/TradeResultPage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,15 @@ export const router = createBrowserRouter([
           {
             path: "portfolio",
             Component: PortfolioPage
+          }
+        ]
+      },
+      {
+        path: "/general-setting",
+        children: [
+          {
+            path: "trade-result",
+            Component: TradeResultPage
           }
         ]
       }

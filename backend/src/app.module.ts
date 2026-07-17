@@ -12,6 +12,7 @@ import { ChecklistModule } from './checklist/checklist.module';
 import { StrategyModule } from './strategy/strategy.module';
 import { StrategyChecklistModule } from './strategy-checklist/strategy-checklist.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { TransactionStatusModule } from './transaction-status/transaction-status.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PortfolioModule } from './portfolio/portfolio.module';
     StrategyModule,
     StrategyChecklistModule,
     PortfolioModule,
+    TransactionStatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

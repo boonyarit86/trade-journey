@@ -16,7 +16,10 @@ export const routePaths: IRoutePath[] = [
     ]},
     {id: "4", icon: "SettingOutlined", label: "Trading Setup", path: "/trading-setup", children: [
         {id: "4.1", icon: "CheckSquareOutlined", label: "Checklist", path: "/checklist"},
-        {id: "4.2", icon: "OrderedListOutlined", label: "Strategy", path: "/strategy"},
+        {id: "4.2", icon: "SettingOutlined", label: "Strategy", path: "/strategy"},
         {id: "4.3", icon: "WalletOutlined", label: "Portfolio", path: "/portfolio"},
+    ]},
+    {id: "5", icon: "SettingOutlined", label: "General Setting", path: "/general-setting", children: [
+        {id: "5.1", icon: "SwapOutlined", label: "Trade Result", path: "/trade-result"},
     ]},
 ];
