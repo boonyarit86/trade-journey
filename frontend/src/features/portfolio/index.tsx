@@ -1,6 +1,6 @@
 import { useState, type Key } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Alert, Button, Flex, message, Switch, Table, Typography } from "antd";
+import { Alert, Button, Flex, message, Popconfirm, Switch, Table, Typography } from "antd";
 import PortfolioFormModal from "./components/PortfolioFormModal";
 import type { IPortfolio, IPortfolioForm, PortfolioFormMode } from "./types";
 import {
@@ -213,14 +213,23 @@ export function PortfolioScreen() {
                     >
                         View
                     </span>
-                    <span
-                        style={{ color: "red", cursor: "pointer" }}
-                        onClick={() => {
-                            deletePortfolioMutation.mutate(record.id);
-                        }}
+                    <Popconfirm
+                        title="Delete portfolio"
+                        description="This will also delete all its transactions. Are you sure?"
+                        okText="Delete"
+                        okType="danger"
+                        cancelText="Cancel"
+                        onConfirm={() => deletePortfolioMutation.mutate(record.id)}
                     >
-                        Delete
-                    </span>
+                        <Button
+                            type="link"
+                            danger
+                            size="small"
+                            loading={deletePortfolioMutation.isPending}
+                        >
+                            Delete
+                        </Button>
+                    </Popconfirm>
                 </Flex>
             ),
         },

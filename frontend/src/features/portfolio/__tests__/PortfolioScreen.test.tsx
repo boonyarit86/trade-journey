@@ -131,7 +131,7 @@ describe('PortfolioScreen', () => {
         });
     });
 
-    it('should handle delete portfolio', async () => {
+    it('should handle delete portfolio after confirming the popconfirm', async () => {
         vi.mocked(portfolioApi.fetchPortfolios).mockResolvedValue(mockPortfolios);
         vi.mocked(portfolioApi.deletePortfolioById).mockResolvedValue(undefined);
 
@@ -142,8 +142,16 @@ describe('PortfolioScreen', () => {
             expect(screen.getByText('Main Portfolio')).toBeDefined();
         });
 
+        // Click the Delete button to open the Popconfirm
         const deleteButtons = screen.getAllByText('Delete');
         await user.click(deleteButtons[0]);
+
+        // Confirm the popconfirm — Ant Design renders the OK button with okText "Delete"
+        await waitFor(() => {
+            expect(screen.queryByText('This will also delete all its transactions. Are you sure?')).toBeTruthy();
+        });
+        const confirmButtons = screen.getAllByText('Delete');
+        await user.click(confirmButtons[confirmButtons.length - 1]);
 
         await waitFor(() => {
             expect(portfolioApi.deletePortfolioById).toHaveBeenCalled();
