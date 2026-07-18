@@ -230,11 +230,24 @@ export class PortfolioService {
 
     async deletePortfolioById(id: string) {
         const pool = this.pgService.getPool();
-        await pool.query(
-            `DELETE FROM "trading_setup"."TD05_Portfolio"
-                WHERE "TD05_Id" = $1`,
-            [id],
-        );
+        const client = await pool.connect();
+        await client.query('BEGIN');
+        try {
+            await client.query(
+                `DELETE FROM "transaction"."TS01_Transaction" WHERE "TD05_Id" = $1`,
+                [id],
+            );
+            await client.query(
+                `DELETE FROM "trading_setup"."TD05_Portfolio" WHERE "TD05_Id" = $1`,
+                [id],
+            );
+            await client.query('COMMIT');
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
         return;
     }
 }

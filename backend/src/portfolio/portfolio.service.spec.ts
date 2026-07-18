@@ -249,13 +249,33 @@ describe('PortfolioService', () => {
     });
 
     describe('deletePortfolioById', () => {
-        it('should delete portfolio and return undefined', async () => {
-            mockQuery.mockResolvedValue({ rows: [] });
+        it('should delete transactions then portfolio in a transaction', async () => {
+            mockClient.query
+                .mockResolvedValueOnce(undefined) // BEGIN
+                .mockResolvedValueOnce({ rows: [] }) // DELETE transactions
+                .mockResolvedValueOnce({ rows: [] }) // DELETE portfolio
+                .mockResolvedValueOnce(undefined); // COMMIT
 
             const result = await service.deletePortfolioById('portfolio-1');
 
             expect(result).toBeUndefined();
-            expect(mockQuery).toHaveBeenCalled();
+            const txDeleteCall = mockClient.query.mock.calls[1];
+            expect(txDeleteCall[0]).toContain('TS01_Transaction');
+            expect(txDeleteCall[1]).toEqual(['portfolio-1']);
+            const portDeleteCall = mockClient.query.mock.calls[2];
+            expect(portDeleteCall[0]).toContain('TD05_Portfolio');
+            expect(portDeleteCall[1]).toEqual(['portfolio-1']);
+            expect(mockClient.release).toHaveBeenCalled();
+        });
+
+        it('should rollback if delete fails', async () => {
+            mockClient.query
+                .mockResolvedValueOnce(undefined) // BEGIN
+                .mockRejectedValueOnce(new Error('delete failed')); // DELETE transactions
+
+            await expect(service.deletePortfolioById('portfolio-1')).rejects.toThrow('delete failed');
+            expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+            expect(mockClient.release).toHaveBeenCalled();
         });
     });
 });
