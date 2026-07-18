@@ -1,0 +1,62 @@
+feature : Transaction
+
+description : n/a
+
+section : backend
+
+
+1. create a file named “15_create_transaction_schema.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+“CREATE SCHEMA "transaction";”
+
+2. create a file named “16_create_TS01_Transaction_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+“CREATE TABLE "trading_setup"."TD05_Portfolio" (
+  "TS01_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  “TD05_Id” uuid NOT NULL,
+  “TS05_Amount” integer NOT NULL,
+  “TS05_Fees” integer NOT NULL DEFAULT 0,
+  “CM03_Value” varchar(3) NOT NULL, 
+  "TS05_CreatedBy" varchar(30) NOT NULL,
+  "TS05_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "TS05_ModifiedBy" varchar(30) NOT NULL,
+  "TS05_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+3. CM03_Value, no need to join with table
+4. API Enpoint
+4.1 create transaction
+=== scenario & logic ===
+scenario 1 : the transaction is profit
+- how to check if profit : CM03_Value = W
+-- update the following columns at TD05_Portfolio table
+--- TD05_CurrentBalance += req.body.{???}
+--- TD05_TotalConsecutiveWin += req.body.{???}
+--- set TD05_TotalConsecutiveLoss = 0 
+--- TD05_SumTotalConsecutiveWin : if TD05_TotalConsecutiveWin > TD05_SumTotalConsecutiveWin then replace it by TD05_TotalConsecutiveWin
+--- TD05_MaxProfitAmount : if req.body.{???} > TD05_MaxProfitAmount then replace it
+--- TD05_TotalTrade += 1
+--- TD05_TotalWinTrade += 1
+--- TD05_WinRatePercent : calcualted by using TD05_TotalLossTrade and TD05_TotalWinTrade such as TD05_TotalLossTrade = 10 & TD05_TotalWinTrade 3 that means TD05_WinRatePercent = 30
+--- set TD05_TotalBreakEven = 0
+scenario 2 : the transaction is loss
+- how to check if profit : CM03_Value = L
+-- update the following columns at TD05_Portfolio table
+--- TD05_CurrentBalance -= req.body.{???}
+--- set TD05_TotalConsecutiveWin = 0
+--- TD05_TotalConsecutiveLoss += req.body.{???}
+--- TD05_SumTotalConsecutiveLoss : if TD05_TotalConsecutiveLoss > TD05_SumTotalConsecutiveLoss then replace it by TD05_TotalConsecutiveLoss
+--- TD05_MaxLossAmount : if req.body.{???} > TD05_MaxLossAmount then replace it
+--- TD05_TotalTrade += 1
+--- TD05_TotalLossTrade += 1
+--- TD05_WinRatePercent : calcualted by using TD05_TotalLossTrade and TD05_TotalWinTrade such as TD05_TotalLossTrade = 10 & TD05_TotalWinTrade 3 that means TD05_WinRatePercent = 30
+--- set TD05_TotalBreakEven = 0
+scenario 3 : the transaction is break even
+- how to check if profit : CM03_Value = B
+-- update the following columns at TD05_Portfolio table
+--- TD05_TotalTrade += 1
+--- TD05_TotalBreakEven += 1
+--- TD05_SumTotalBreakEven : if TD05_TotalBreakEven > TD05_SumTotalBreakEven then replace it
+==== END =====
+5. every scenario should update “CM03_Value” using req.body given from frontend
+6. there is only read & create API for transaction
+
+Feed free to ask for more detail before building

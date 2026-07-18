@@ -1,0 +1,21 @@
+feature : Transaction
+
+description : n/a
+
+section : frontend
+1. remove all exist component on Dashboard page, it will be replaced by new UI
+2. I would like you design Dashboard by yourself, here is my requirement
+user journey
+- select project then display all portfolio (port)
+-- can filter port
+-- summary my trading using port & transaction data
+-- I would like to see my profit/loss as graph or some badge
+- can create transaction
+-- must select port first
+-- can not submit form if all required checklist does not to be checked
+-- validate the remaining balance to check if enough before submitting
+- can view all transaction when select a port
+- have a calendar to summary profit/loss on each day
+- there is a graph to summary drawndown (optional : if my data is enough)
+
+Feed free to ask for more detail before building

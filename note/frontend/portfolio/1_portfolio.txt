@@ -1,0 +1,30 @@
+feature : Portfolio
+
+description : n/a
+
+section : frontend
+create “Portfolio” menu below “Trading Setup”
+when click “Portfolio” menu, show a table displaying all portfolio and able to create new, update it, delete it, toggle active status
+in the form, must be able to select a project and an asset
+form detail
+Name : required
+Project : required
+Asset : required
+Balance : required (TD05_InitBalance)
+Strategy : select, optional (when select, display its detail included checklist)
+Description : textarea, optional
+in table, dont need to display all field
+column for displaying on table
+active status (switch)
+portfolio name
+project name
+init balance
+current balance (%)
+for %, you should calculate the difference from init balance. the purpose to do this is to find out how much money I get or lost
+strategy name
+total trade
+win rate
+asset type name
+there is a table filter at project column
+do unit test and e2e test, and then mock data for only test.
+integrate all api in backend section

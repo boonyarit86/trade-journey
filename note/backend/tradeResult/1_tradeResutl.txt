@@ -1,0 +1,32 @@
+feature : Trade Result
+
+description : n/a
+
+section : backend
+
+1. create a file named “12_create_CM03_TransactionStatus_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+“CREATE TABLE "common"."CM03_TransactionStatus" (
+  "CM03_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  “CM03_Text” varchar(20) NOT NULL,
+  “CM03_Value” varchar(3) NOT NULL,
+  “CM03_ColorCode” varchar(30) NOT NULL,
+  "CM03_CreatedBy" varchar(30) NOT NULL,
+  "CM03_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "CM03_ModifiedBy" varchar(30) NOT NULL,
+  "CM03_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+2. create a file named “13_mtd_init_transaction_status.sql” and put a script into it. its folder path is “src/migration”. the below is the detail you must generate the script.
+more detail “CM03_Value” 
+CM03_Value =  CM03_Text
+W = win
+L = loss
+B = break even
+C = cancel
+P = pending
+3. CM03_ColorCode you can define whatever such as “#fff”. those value the frontend will implemented as color badge
+4. for api endpoint, please follow all pattern of asset feature. but “Trade Result” feature must create into new module or folder. you can use Nestjs cmd to do it.
+5. Not allowed for deleting data, so there is no the delete API
+6. do unit test and e2e test, and then mock data for only test
+
+If you have any question or any good for me, dont hesitant for telling me

@@ -1,0 +1,49 @@
+feature : Portfolio
+
+description : n/a
+
+section : backend
+
+
+create a file named “11_create_TD05_Portfolio_table.sql” and put a script into it. its folder path is “src/migration”. the below is the script you must use.
+
+“CREATE TABLE "trading_setup"."TD05_Portfolio" (
+  "TD05_Id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  “TD01_Id” uuid NOT NULL,
+  “CM02_Id” uuid NOT NULL,
+  “TD03_Strategy” uuid,
+  "TD05_Name" varchar(50) NOT NULL UNIQUE,
+  “TD05_InitBalance” integer NOT NULL,
+  “TD05_CurrentBalance” integer NOT NULL,
+  “TD05_TotalConsecutiveWin” numeric NOT NULL DEFAULT 0,
+  “TD05_TotalConsecutiveLoss” numeric NOT NULL DEFAULT 0,
+  “TD05_TotalConsecutiveWinDay” numeric NOT NULL DEFAULT 0,
+  “TD05_TotalConsecutiveLossDay” numeric NOT NULL DEFAULT 0,
+  “TD05_SumTotalConsecutiveWin” numeric NOT NULL DEFAULT 0,
+  “TD05_SumTotalConsecutiveLoss” numeric NOT NULL DEFAULT 0,
+  “TD05_SumTotalConsecutiveWinDay” numeric NOT NULL DEFAULT 0,
+  “TD05_SumTotalConsecutiveLossDay” numeric NOT NULL DEFAULT 0,
+  “TD05_MaxProfitAmount” integer NOT NULL DEFAULT 0,
+  “TD05_MaxLossAmount” integer NOT NULL DEFAULT 0,
+  “TD05_AverageRiskRewardRatio” integer NOT NULL DEFAULT 0,
+  “TD05_TotalTrade” numeric NOT NULL DEFAULT 0,
+  “TD05_TotalWinTrade” numeric NOT NULL DEFAULT 0,
+  “TD05_TotalLossTrade” numeric NOT NULL DEFAULT 0,
+  “TD05_WinRatePercent” integer NOT NULL DEFAULT 0,
+  “TD05_Description” varchar(255),
+  "TD05_IsActive" boolean DEFAULT true NOT NULL,
+  "TD05_CreatedBy" varchar(30) NOT NULL,
+  "TD05_CreatedAt" timestamp NOT NULL DEFAULT NOW(),
+  "TD05_ModifiedBy" varchar(30) NOT NULL,
+  "TD05_ModifiedAt" timestamp NOT NULL DEFAULT NOW()
+);”
+
+for api endpoint, please follow all pattern of asset feature. but “portfolio” feature must create into new module or folder. you can Nestjs cmd to do it.
+for query of “TD05_Portfolio” must always join TD01_Project.
+the relationship between TD05_Portfolio and TD01_Project is many per one
+for query of “TD05_Portfolio” must always join CM02_Asset.
+the relationship between TD05_Portfolio and CM02_Asset is one per one
+for query of “TD05_Portfolio” must always join TD03_Strategy.
+the relationship between TD05_Portfolio and TD03_Strategy is one per one
+when create a record, use TD05_InitBalnce value set TD05_CurrentBalance
+do unit test and e2e test, and then mock data for only test

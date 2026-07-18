@@ -1,0 +1,1 @@
+When I delete a port, Could you delete its transaction?

@@ -1,0 +1,13 @@
+feature : Trade Result
+
+description : n/a
+
+section : frontend
+1. create the parent “General Setting” menu on sidebar
+2. create “Trade Result” menu below “General Setting”
+3. when click “Trade Result” menu, show a table displaying all data and able to create new, update it, toggle active status
+4. there is no deletion implemention
+5. do unit test and e2e test, and then mock data for only test.
+6. integrate all api in backend section
+
+If you have any question or any good for me, dont hesitant for telling me

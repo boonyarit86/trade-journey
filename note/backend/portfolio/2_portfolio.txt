@@ -1,0 +1,16 @@
+feature : Portfolio
+
+Section : Backend
+
+1. I would like you to add more column at “TD05_Portfolio” table. the below is the column I want you to do it
+====
+“TD05_TotalBreakEven” numeric NOT NULL DEFAULT 0,
+“TD05_SumTotalBreakEven” numeric NOT NULL DEFAULT 0,
+“CM05_Value” varchar(3)
+====
+
+2. CM05_Value column, add the following description "used to validate the previous transaction result"
+
+Update test case, if you think it necessary
+
+Do you have anything concern, if not then build plan

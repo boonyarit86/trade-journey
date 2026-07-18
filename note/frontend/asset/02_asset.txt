@@ -1,0 +1,1 @@
+On frontend, could you move the "Asset" menu into "General Setting" on sidebar
