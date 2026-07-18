@@ -23,19 +23,6 @@ export const router = createBrowserRouter([
         Component: ProjectPage,
       },
       {
-        path: "/asset",
-        children: [
-          {
-            path: "type",
-            Component: AssetTypePage
-          },
-          {
-            path: "item",
-            Component: AssetItemPage
-          }
-        ]
-      },
-      {
         path: "/trading-setup",
         children: [
           {
@@ -58,6 +45,19 @@ export const router = createBrowserRouter([
           {
             path: "trade-result",
             Component: TradeResultPage
+          },
+          {
+            path: "asset",
+            children: [
+              {
+                path: "type",
+                Component: AssetTypePage
+              },
+              {
+                path: "item",
+                Component: AssetItemPage
+              }
+            ]
           }
         ]
       }
