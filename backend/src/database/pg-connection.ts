@@ -9,6 +9,8 @@ export const connectPg = async () => {
         database: POSTGRES_DB,
         max: 10,
         ssl: { rejectUnauthorized: false },
+        connectionTimeoutMillis: 5000,
+        idleTimeoutMillis: 30000,
     });
 
     await pool.connect();
