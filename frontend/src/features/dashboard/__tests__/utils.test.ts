@@ -4,7 +4,6 @@ import {
     buildBalanceSeries,
     buildDrawdownSeries,
     buildDailyPnl,
-    toDateKey,
     computeProfitLoss,
 } from '../utils';
 import type { ITransaction } from '../../transaction/types';
@@ -15,6 +14,7 @@ const makeTx = (overrides: Partial<ITransaction>): ITransaction => ({
     amount: 100,
     fees: 0,
     resultValue: 'W',
+    tradeDate: '2026-01-01',
     createdBy: 'admin',
     createdAt: '2026-01-01T00:00:00.000Z',
     modifiedBy: 'admin',
@@ -34,8 +34,8 @@ describe('dashboard utils', () => {
     describe('buildBalanceSeries', () => {
         it('should build a running balance starting from init balance', () => {
             const transactions = [
-                makeTx({ id: 'a', resultValue: 'W', amount: 200, createdAt: '2026-01-02T00:00:00.000Z' }),
-                makeTx({ id: 'b', resultValue: 'L', amount: 100, createdAt: '2026-01-03T00:00:00.000Z' }),
+                makeTx({ id: 'a', resultValue: 'W', amount: 200, tradeDate: '2026-01-02' }),
+                makeTx({ id: 'b', resultValue: 'L', amount: 100, tradeDate: '2026-01-03' }),
             ];
 
             const series = buildBalanceSeries(1000, transactions);
@@ -47,10 +47,10 @@ describe('dashboard utils', () => {
             ]);
         });
 
-        it('should sort transactions by date before computing', () => {
+        it('should sort transactions by tradeDate before computing', () => {
             const transactions = [
-                makeTx({ id: 'b', resultValue: 'L', amount: 100, createdAt: '2026-01-03T00:00:00.000Z' }),
-                makeTx({ id: 'a', resultValue: 'W', amount: 200, createdAt: '2026-01-02T00:00:00.000Z' }),
+                makeTx({ id: 'b', resultValue: 'L', amount: 100, tradeDate: '2026-01-03' }),
+                makeTx({ id: 'a', resultValue: 'W', amount: 200, tradeDate: '2026-01-02' }),
             ];
 
             const series = buildBalanceSeries(1000, transactions);
@@ -63,8 +63,8 @@ describe('dashboard utils', () => {
     describe('buildDrawdownSeries', () => {
         it('should compute drawdown percentage from running peak', () => {
             const transactions = [
-                makeTx({ id: 'a', resultValue: 'W', amount: 200, createdAt: '2026-01-02T00:00:00.000Z' }),
-                makeTx({ id: 'b', resultValue: 'L', amount: 300, createdAt: '2026-01-03T00:00:00.000Z' }),
+                makeTx({ id: 'a', resultValue: 'W', amount: 200, tradeDate: '2026-01-02' }),
+                makeTx({ id: 'b', resultValue: 'L', amount: 300, tradeDate: '2026-01-03' }),
             ];
 
             const series = buildDrawdownSeries(1000, transactions);
@@ -76,19 +76,19 @@ describe('dashboard utils', () => {
     });
 
     describe('buildDailyPnl', () => {
-        it('should aggregate net pnl per day', () => {
-            const dayOne = '2026-01-02T09:00:00.000Z';
-            const dayTwo = '2026-01-03T10:00:00.000Z';
+        it('should aggregate net pnl per day using tradeDate', () => {
+            const dayOne = '2026-01-02';
+            const dayTwo = '2026-01-03';
             const transactions = [
-                makeTx({ id: 'a', resultValue: 'W', amount: 200, createdAt: dayOne }),
-                makeTx({ id: 'b', resultValue: 'L', amount: 50, createdAt: dayOne }),
-                makeTx({ id: 'c', resultValue: 'W', amount: 30, createdAt: dayTwo }),
+                makeTx({ id: 'a', resultValue: 'W', amount: 200, tradeDate: dayOne }),
+                makeTx({ id: 'b', resultValue: 'L', amount: 50, tradeDate: dayOne }),
+                makeTx({ id: 'c', resultValue: 'W', amount: 30, tradeDate: dayTwo }),
             ];
 
             const result = buildDailyPnl(transactions);
 
-            expect(result[toDateKey(dayOne)]).toBe(150);
-            expect(result[toDateKey(dayTwo)]).toBe(30);
+            expect(result[dayOne]).toBe(150);
+            expect(result[dayTwo]).toBe(30);
         });
     });
 

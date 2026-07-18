@@ -84,7 +84,8 @@ The Dashboard is the landing page (`/`) and is a full trading overview built aro
   - Disabled until a portfolio is selected
   - If the portfolio has a linked strategy, its checklist is shown and all required items must be checked before the form can be submitted
   - For a Loss, the amount is validated against the current balance; submit is blocked when there is not enough balance
-  - Fields: result (Win / Loss / Break Even), amount, and fees
+  - Fields: **trade date** (date picker, defaults to today, future dates disabled), result (Win / Loss / Break Even), amount, and fees
+  - The selected trade date is stored as `tradeDate`; the calendar, charts, and transaction table all use `tradeDate` (not the DB audit timestamp) for day-level grouping and display
 - Creating a transaction updates the portfolio statistics on the backend; the dashboard invalidates the portfolio and transaction queries so the summary, charts, and table refresh automatically
 
 ### Testing

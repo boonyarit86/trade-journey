@@ -9,6 +9,7 @@ export interface ITransaction {
     resultValue: string;
     resultText?: string | null;
     resultColorCode?: string | null;
+    tradeDate: string;
     createdBy: string;
     createdAt: string;
     modifiedBy: string;
@@ -20,4 +21,5 @@ export interface ITransactionForm {
     amount: number;
     fees?: number;
     resultValue: TransactionResultValue;
+    tradeDate?: string;
 }

@@ -6,10 +6,12 @@ export const signedAmount = (transaction: ITransaction): number => {
     return 0;
 };
 
-const sortByCreatedAt = (transactions: ITransaction[]): ITransaction[] =>
-    [...transactions].sort(
-        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    );
+const sortByTradeDate = (transactions: ITransaction[]): ITransaction[] =>
+    [...transactions].sort((a, b) => {
+        const dateCompare = a.tradeDate.localeCompare(b.tradeDate);
+        if (dateCompare !== 0) return dateCompare;
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
 
 export interface BalancePoint {
     label: string;
@@ -20,7 +22,7 @@ export const buildBalanceSeries = (
     initBalance: number,
     transactions: ITransaction[],
 ): BalancePoint[] => {
-    const sorted = sortByCreatedAt(transactions);
+    const sorted = sortByTradeDate(transactions);
     const points: BalancePoint[] = [{ label: "Start", balance: initBalance }];
     let running = initBalance;
     sorted.forEach((t, index) => {
@@ -58,7 +60,7 @@ export const toDateKey = (value: string): string => {
 
 export const buildDailyPnl = (transactions: ITransaction[]): Record<string, number> => {
     return transactions.reduce<Record<string, number>>((acc, t) => {
-        const key = toDateKey(t.createdAt);
+        const key = t.tradeDate;
         acc[key] = (acc[key] ?? 0) + signedAmount(t);
         return acc;
     }, {});

@@ -1,6 +1,6 @@
 import { Table, Tag } from "antd";
 import type { ITransaction } from "../../transaction/types";
-import { signedAmount, toDateKey } from "../utils";
+import { signedAmount } from "../utils";
 
 interface Props {
     transactions: ITransaction[];
@@ -11,9 +11,8 @@ export function TransactionTable({ transactions, loading }: Props) {
     const columns = [
         {
             title: "Date",
-            dataIndex: "createdAt",
-            key: "createdAt",
-            render: (value: string) => toDateKey(value),
+            dataIndex: "tradeDate",
+            key: "tradeDate",
         },
         {
             title: "Result",

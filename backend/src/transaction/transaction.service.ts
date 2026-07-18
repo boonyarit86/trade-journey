@@ -6,7 +6,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 const TRANSACTION_SELECT = `
     SELECT
         t."TS01_Id", t."TD05_Id", t."TS01_Amount", t."TS01_Fees", t."CM03_Value",
-        t."TS01_CreatedBy", t."TS01_CreatedAt", t."TS01_ModifiedBy", t."TS01_ModifiedAt",
+        t."TS01_TradeDate", t."TS01_CreatedBy", t."TS01_CreatedAt", t."TS01_ModifiedBy", t."TS01_ModifiedAt",
         p."TD05_Name",
         cs."CM03_Text", cs."CM03_ColorCode"
     FROM "transaction"."TS01_Transaction" t
@@ -28,6 +28,7 @@ export class TransactionService {
             resultValue: r.CM03_Value,
             resultText: r.CM03_Text ?? null,
             resultColorCode: r.CM03_ColorCode ?? null,
+            tradeDate: r.TS01_TradeDate,
             createdBy: r.TS01_CreatedBy,
             createdAt: r.TS01_CreatedAt,
             modifiedBy: r.TS01_ModifiedBy,
@@ -39,10 +40,10 @@ export class TransactionService {
         const pool = this.pgService.getPool();
         const result = portfolioId
             ? await pool.query(
-                  `${TRANSACTION_SELECT} WHERE t."TD05_Id" = $1 ORDER BY t."TS01_CreatedAt"`,
+                  `${TRANSACTION_SELECT} WHERE t."TD05_Id" = $1 ORDER BY t."TS01_TradeDate", t."TS01_CreatedAt"`,
                   [portfolioId],
               )
-            : await pool.query(`${TRANSACTION_SELECT} ORDER BY t."TS01_CreatedAt"`);
+            : await pool.query(`${TRANSACTION_SELECT} ORDER BY t."TS01_TradeDate", t."TS01_CreatedAt"`);
         const rows: ITransactionRow[] = result.rows;
         const transactions: ITransaction[] = rows.map((r) => this.mapRow(r));
         return {
@@ -71,6 +72,7 @@ export class TransactionService {
         const amount = body.amount;
         const fees = body.fees ?? 0;
         const resultValue = body.resultValue;
+        const tradeDate = body.tradeDate ?? new Date().toISOString().split('T')[0];
 
         await client.query('BEGIN');
         try {
@@ -139,10 +141,10 @@ export class TransactionService {
 
             const insertResult = await client.query(
                 `INSERT INTO "transaction"."TS01_Transaction"
-                ("TD05_Id", "TS01_Amount", "TS01_Fees", "CM03_Value", "TS01_CreatedBy", "TS01_ModifiedBy")
-                VALUES ($1, $2, $3, $4, $5, $6)
+                ("TD05_Id", "TS01_Amount", "TS01_Fees", "CM03_Value", "TS01_TradeDate", "TS01_CreatedBy", "TS01_ModifiedBy")
+                VALUES ($1, $2, $3, $4, $5, $6, $7)
                 RETURNING "TS01_Id"`,
-                [body.portfolioId, amount, fees, resultValue, authorName, authorName],
+                [body.portfolioId, amount, fees, resultValue, tradeDate, authorName, authorName],
             );
             const rowInserted: ITransactionRow = insertResult?.rows?.[0] ?? null;
 

@@ -1,0 +1,2 @@
+On Dashboard page, I would like to select a date when create new transaction
+So do backend

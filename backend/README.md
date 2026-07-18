@@ -139,7 +139,7 @@ Validation on `/portfolio` is enforced via a `ValidationPipe` scoped to `Portfol
 - `GET /transaction/:id` - Get transaction by ID.
 - `POST /transaction` - Create a transaction and atomically update the linked portfolio's statistics in a single DB transaction.
 
-Body: `{ portfolioId, amount, fees?, resultValue }` where `resultValue` is one of `W` (win), `L` (loss), `B` (break-even). Any other value (e.g. `C`, `P`) is rejected with `400`.
+Body: `{ portfolioId, amount, fees?, resultValue, tradeDate? }` where `resultValue` is one of `W` (win), `L` (loss), `B` (break-even). `tradeDate` is an optional ISO 8601 date string (`YYYY-MM-DD`); when omitted it defaults to today. Any other `resultValue` (e.g. `C`, `P`) is rejected with `400`.
 
 Create logic (all within one DB transaction):
 - The portfolio row is locked with `SELECT ... FOR UPDATE`; a missing portfolio returns `404`.
@@ -171,7 +171,7 @@ Validation on `/transaction` is enforced via a `ValidationPipe` scoped to `Trans
 - `CM03_TransactionStatus` - Transaction result definitions (W = win, L = loss, B = break even, C = cancel, P = pending) with a color code used by the frontend.
 
 ### Transaction Schema
-- `TS01_Transaction` - Recorded trades belonging to a portfolio (`TD05_Id`). Stores `TS01_Amount`, `TS01_Fees`, and `CM03_Value` (the result). Creating a row atomically updates the parent `TD05_Portfolio` statistics.
+- `TS01_Transaction` - Recorded trades belonging to a portfolio (`TD05_Id`). Stores `TS01_Amount`, `TS01_Fees`, `CM03_Value` (the result), and `TS01_TradeDate` (the user-selected trade date, defaults to `CURRENT_DATE`). Creating a row atomically updates the parent `TD05_Portfolio` statistics. Results are ordered by `TS01_TradeDate, TS01_CreatedAt`.
 
 ## Test
 

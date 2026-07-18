@@ -1,4 +1,4 @@
-import { IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import { IsDateString, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export const ALLOWED_TRANSACTION_RESULTS = ['W', 'L', 'B'] as const;
 
@@ -20,4 +20,8 @@ export class CreateTransactionDto {
     @IsNotEmpty()
     @IsIn(ALLOWED_TRANSACTION_RESULTS)
     resultValue: string;
+
+    @IsDateString()
+    @IsOptional()
+    tradeDate?: string;
 }

@@ -15,6 +15,7 @@ describe('TransactionService', () => {
             TS01_Amount: 100,
             TS01_Fees: 5,
             CM03_Value: 'W',
+            TS01_TradeDate: '2026-01-01',
             TS01_CreatedBy: 'admin',
             TS01_CreatedAt: now,
             TS01_ModifiedBy: 'admin',
@@ -84,6 +85,7 @@ describe('TransactionService', () => {
             expect(result.data[0].resultValue).toBe('W');
             expect(result.data[0].resultText).toBe('win');
             expect(result.data[0].resultColorCode).toBe('#0f0');
+            expect(result.data[0].tradeDate).toBe('2026-01-01');
             expect(mockQuery.mock.calls[0][1]).toBeUndefined();
         });
 
@@ -178,6 +180,25 @@ describe('TransactionService', () => {
             expect(params[10]).toBe(3); // totalBreakEven 2 + 1
             expect(params[11]).toBe(3); // sumTotalBreakEven max
             expect(params[13]).toBe('B');
+        });
+
+        it('should use today as tradeDate when not provided in dto', async () => {
+            await runCreate(
+                buildPortfolioRow(),
+                { portfolioId: 'portfolio-1', amount: 100, resultValue: 'W' },
+            );
+            const insertParams = mockClient.query.mock.calls[2][1];
+            const today = new Date().toISOString().split('T')[0];
+            expect(insertParams[4]).toBe(today); // tradeDate at index 4
+        });
+
+        it('should use provided tradeDate when given in dto', async () => {
+            await runCreate(
+                buildPortfolioRow(),
+                { portfolioId: 'portfolio-1', amount: 100, resultValue: 'W', tradeDate: '2026-01-15' },
+            );
+            const insertParams = mockClient.query.mock.calls[2][1];
+            expect(insertParams[4]).toBe('2026-01-15');
         });
 
         it('should throw NotFound if portfolio does not exist', async () => {

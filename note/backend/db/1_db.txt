@@ -1,0 +1,22 @@
+On backend when the db is crashed, 
+I would like you to restart it ot reconnect it to make it back to work
+
+node:events:496
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: Connection terminated unexpectedly
+    at Connection.<anonymous> (/Users/boonyarit/Documents/Code/projects/trade-journey/backend/node_modules/pg/lib/client.js:193:73)
+    at Object.onceWrapper (node:events:632:28)
+    at Connection.emit (node:events:518:28)
+    at Socket.<anonymous> (/Users/boonyarit/Documents/Code/projects/trade-journey/backend/node_modules/pg/lib/connection.js:61:12)
+    at Socket.emit (node:events:530:35)
+    at TCP.<anonymous> (node:net:346:12)
+Emitted 'error' event on Client instance at:
+    at Client._handleErrorEvent (/Users/boonyarit/Documents/Code/projects/trade-journey/backend/node_modules/pg/lib/client.js:411:10)
+    at Connection.<anonymous> (/Users/boonyarit/Documents/Code/projects/trade-journey/backend/node_modules/pg/lib/client.js:211:16)
+    at Object.onceWrapper (node:events:632:28)
+    [... lines matching original stack trace ...]
+    at TCP.<anonymous> (node:net:346:12)
+
+Node.js v22.17.0

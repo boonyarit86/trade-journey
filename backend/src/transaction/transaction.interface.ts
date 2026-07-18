@@ -4,6 +4,7 @@ export interface ITransactionRow {
     TS01_Amount: number;
     TS01_Fees: number;
     CM03_Value: string;
+    TS01_TradeDate: string;
     TS01_CreatedBy: string;
     TS01_CreatedAt: Date;
     TS01_ModifiedBy: string;
@@ -22,6 +23,7 @@ export interface ITransaction {
     resultValue: string;
     resultText?: string | null;
     resultColorCode?: string | null;
+    tradeDate: string;
     createdBy: string;
     createdAt: Date;
     modifiedBy: string;
